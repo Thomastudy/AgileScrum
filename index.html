@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infografía: Metodología Agile</title>
+    <!-- Incluimos Tailwind CSS para un estilo moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Incluimos Chart.js para el gráfico de Burn Down Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f4f8;
+      }
+      .kpi-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+        border-left: 5px solid #ff6b6b;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .kpi-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -2px rgb(0 0 0 / 0.1);
+      }
+      .flowchart-node {
+        background-color: #4ecdc4;
+        color: white;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-size: 0.875rem;
+        flex: 1;
+      }
+      .flowchart-connector {
+        width: 2px;
+        background-color: #ff6b6b;
+        height: 1.5rem;
+        margin: 0 auto;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 350px;
+        max-height: 400px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 400px;
+        }
+        .flowchart-node {
+          padding: 1rem;
+          font-size: 1rem;
+        }
+      }
+      .icon-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        background-color: #e2e8f0;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <div class="container mx-auto p-4 md:p-8">
+      <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+          Comprendiendo la Metodología Agile
+        </h1>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Una guía visual a los principios, conceptos y herramientas clave de la
+          metodología que está transformando la entrega de proyectos.
+        </p>
+      </header>
+
+      <main>
+        <section
+          id="audio-note"
+          class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8 text-center"
+        >
+          <h2 class="text-3xl font-bold mb-4">Escucha más sobre Agile</h2>
+          <p class="text-gray-700 max-w-2xl mx-auto mb-6">
+            Escucha una breve explicación de la diferencia entre el enfoque
+            tradicional y el enfoque Agile.
+          </p>
+          <audio controls class="w-full max-w-sm mx-auto">
+            <!-- Puedes reemplazar 'tu_archivo_de_audio.mp3' con la URL de tu archivo de audio. -->
+            <source src="./archivos/agile.mp3" type="audio/mpeg" />
+            Tu navegador no soporta el elemento de audio.
+          </audio>
+        </section>
+        <section id="agile-vs-traditional" class="mb-16">
+          <h2 class="text-3xl font-bold text-center mb-8">
+            Agile vs. Enfoque Tradicional
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-10">
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <h3 class="text-2xl font-bold mb-4 text-red-500">
+                Tradicional (Cascada)
+              </h3>
+              <p class="text-gray-700 mb-4">
+                Filosofía: Basada en un plan rígido y secuencial. Se asume que
+                todos los requisitos se pueden definir al principio. Cada fase
+                debe completarse antes de pasar a la siguiente.
+              </p>
+              <p class="text-gray-700 mb-4">
+                Entrega: El producto completo se entrega al final del proyecto,
+                después de un largo período de tiempo.
+              </p>
+              <p class="text-gray-700">
+                Flexibilidad: Es muy difícil y costoso hacer cambios una vez que
+                el proyecto ha avanzado. Un cambio en los requisitos puede
+                significar tener que volver a etapas anteriores.
+              </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <h3 class="text-2xl font-bold mb-4 text-teal-500">Agile</h3>
+              <p class="text-gray-700 mb-4">
+                Filosofía: Se basa en la iteración y la adaptación constante,
+                reconociendo que los requisitos pueden cambiar. El trabajo se
+                divide en ciclos cortos llamados sprints, donde se entrega una
+                porción de valor funcional del producto.
+              </p>
+              <p class="text-gray-700 mb-4">
+                Entrega: El producto se entrega en incrementos pequeños y
+                frecuentes. El cliente ve y puede usar partes del producto a lo
+                largo del proyecto, no solo al final.
+              </p>
+              <p class="text-gray-700">
+                Flexibilidad: Los cambios son bienvenidos. Al trabajar en ciclos
+                cortos, es mucho más fácil incorporar feedback del cliente y
+                ajustar el rumbo del proyecto.
+              </p>
+            </div>
+          </div>
+          <section id="agile-vs-traditional" class="mb-16">
+            <div class="flex flex-col items-center">
+              <p class="text-center text-xl font-semibold mb-4 text-gray-700">
+                El contraste visual:
+              </p>
+              <div class="flex justify-around items-center w-full max-w-3xl">
+                <div class="text-center p-4">
+                  <p class="text-4xl">❌</p>
+                  <p class="text-sm mt-2 text-gray-600">
+                    No construyas todo si lo que el cliente realmente necesita
+                    es esto:
+                  </p>
+                </div>
+                <div class="text-center p-4">
+                  <p class="text-4xl">✅</p>
+                  <p class="text-sm mt-2 text-gray-600">
+                    Entrega valor en incrementos funcionales y adaptables.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex flex-col items-center w-full max-w-3xl mt-4 space-y-4"
+              >
+                <div class="bg-white rounded-lg p-4 shadow-md w-full">
+                  <p class="text-red-500 font-semibold mb-2">
+                    Enfoque Tradicional: La entrega de valor al final.
+                  </p>
+                  <div class="flex justify-between items-center text-gray-600">
+                    <span
+                      >Plan → Requisitos → Diseño → Construcción → Prueba →
+                      <strong class="text-red-500"
+                        >Entrega Completa</strong
+                      ></span
+                    >
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg p-4 shadow-md w-full">
+                  <p class="text-teal-500 font-semibold mb-2">
+                    Enfoque Agile: La entrega de valor incremental.
+                  </p>
+                  <div class="flex justify-between items-center text-gray-600">
+                    <span
+                      >Ciclo 1: <strong class="text-teal-500">Entrega</strong> →
+                      Feedback</span
+                    >
+                    <span
+                      >Ciclo 2: <strong class="text-teal-500">Entrega</strong> →
+                      Feedback</span
+                    >
+                    <span
+                      >Ciclo 3: <strong class="text-teal-500">Entrega</strong> →
+                      Feedback</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div class="flex flex-col items-center max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <span class="text-5xl mb-4">❌</span>
+                <div class="flex items-end space-x-2">
+                  <div class="bg-red-300 w-8 h-8 rounded-full"></div>
+                  <div class="bg-red-400 w-8 h-12 rounded-full"></div>
+                  <div class="bg-red-500 w-8 h-16 rounded-full"></div>
+                  <div class="bg-red-600 w-8 h-20 rounded-full"></div>
+                </div>
+                <p class="mt-4 text-sm text-gray-600">
+                  Enfoque Tradicional: Entregar el producto completo al final.
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <span class="text-5xl mb-4">✅</span>
+                <div class="flex items-end space-x-2">
+                  <div class="bg-green-300 w-8 h-8 rounded-lg"></div>
+                  <div class="bg-green-400 w-8 h-12 rounded-lg"></div>
+                  <div class="bg-green-500 w-8 h-16 rounded-lg"></div>
+                  <div class="bg-green-600 w-8 h-20 rounded-lg"></div>
+                </div>
+                <p class="mt-4 text-sm text-gray-600">
+                  Enfoque Agile: Entregar incrementos funcionales y obtener
+                  feedback.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="agile-principles"
+          class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8"
+        >
+          <h2 class="text-3xl font-bold text-center mb-8">
+            Los 12 Principios Ágiles
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">🤝</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                1. Satisfacer al cliente
+              </h3>
+              <p class="text-sm text-gray-700">
+                Nuestra prioridad es la entrega temprana y continua de software
+                de valor.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">🔄</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                2. Estar abiertos al cambio
+              </h3>
+              <p class="text-sm text-gray-700">
+                Aceptamos que los requisitos cambien, incluso en etapas tardías,
+                para proporcionar una ventaja competitiva al cliente.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">🚀</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                3. Entregas frecuentes
+              </h3>
+              <p class="text-sm text-gray-700">
+                Entregamos software que funcione con frecuencia, desde un par de
+                semanas hasta un par de meses.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">🧑‍💼🧑‍💻</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                4. Trabajo colaborativo
+              </h3>
+              <p class="text-sm text-gray-700">
+                Las personas del negocio y los desarrolladores deben trabajar
+                juntos de forma cotidiana durante todo el proyecto.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">🔥</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                5. Motivar al equipo
+              </h3>
+              <p class="text-sm text-gray-700">
+                Se construyen proyectos en torno a individuos motivados,
+                dándoles el entorno, el apoyo y la confianza para que hagan su
+                trabajo.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">🗣️</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                6. Comunicación abierta y directa
+              </h3>
+              <p class="text-sm text-gray-700">
+                El método más eficiente de comunicar es la conversación cara a
+                cara.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">📈</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                7. Lenguaje sencillo
+              </h3>
+              <p class="text-sm text-gray-700">
+                El software que funciona es la principal medida de progreso.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">🏃</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                8. Mantener un ritmo sostenible
+              </h3>
+              <p class="text-sm text-gray-700">
+                Los procesos ágiles promueven un desarrollo sostenible para
+                evitar el agotamiento del equipo.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">💎</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                9. Buscar la excelencia
+              </h3>
+              <p class="text-sm text-gray-700">
+                La atención continua a la excelencia técnica y al buen diseño
+                mejora la agilidad.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">✂️</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                10. Lo simple y lo breve
+              </h3>
+              <p class="text-sm text-gray-700">
+                La simplicidad, o el arte de maximizar la cantidad de trabajo no
+                realizado, es esencial.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">🧠</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                11. Equipos autónomos
+              </h3>
+              <p class="text-sm text-gray-700">
+                Las mejores arquitecturas, requisitos y diseños emergen de
+                equipos auto-organizados.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <span class="text-3xl mb-2 block">💡</span>
+              <h3 class="font-bold text-lg mb-2 text-teal-600">
+                12. Retroalimentación
+              </h3>
+              <p class="text-sm text-gray-700">
+                A intervalos regulares, el equipo reflexiona sobre cómo ser más
+                efectivo para ajustar y perfeccionar su comportamiento.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="concepts"
+          class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8"
+        >
+          <h2 class="text-3xl font-bold text-center mb-8">
+            Conceptos Esenciales
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <h3 class="font-bold text-xl mb-2 text-teal-600">
+                Historias de Usuario (User Story)
+              </h3>
+              <p class="text-sm text-gray-700">
+                Descripción de una funcionalidad desde la perspectiva del
+                usuario final para entender el "porqué" de lo que se construye.
+              </p>
+              <div class="bg-white p-2 rounded-md mt-4 border border-gray-300">
+                <p class="text-xs font-semibold text-gray-600">
+                  Estructura estándar:
+                </p>
+                <p class="text-sm mt-1">
+                  "Como <span class="font-bold">[rol]</span>, quiero
+                  <span class="font-bold">[funcionalidad]</span> para
+                  <span class="font-bold">[valor]</span>."
+                </p>
+              </div>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <h3 class="font-bold text-xl mb-2 text-red-600">
+                Puntos de Historia (Story Points)
+              </h3>
+              <p class="text-sm text-gray-700">
+                Una medida de la complejidad, riesgo y esfuerzo para completar
+                una Historia de Usuario. No es una medida de tiempo.
+              </p>
+              <div class="bg-white p-2 rounded-md mt-4 border border-gray-300">
+                <p class="text-xs font-semibold text-gray-600">
+                  Se usan números de la serie de Fibonacci (1, 2, 3, 5, 8...)
+                  para evitar la falsa precisión.
+                </p>
+              </div>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <h3 class="font-bold text-xl mb-2 text-blue-600">
+                MVP (Producto Mínimo Viable)
+              </h3>
+              <p class="text-sm text-gray-700">
+                La versión más simple de un producto con funcionalidades
+                suficientes para ser lanzado y obtener feedback real.
+              </p>
+              <p class="text-xs text-gray-500 mt-2">
+                Sirve para validar una idea de negocio con el menor esfuerzo
+                posible.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <h3 class="font-bold text-xl mb-2 text-yellow-600">
+                Product & Sprint Backlog
+              </h3>
+              <p class="text-sm text-gray-700">
+                El <b>Product Backlog</b> es la lista completa y priorizada de
+                todo lo que podría necesitar el producto. <br /><br />El
+                <b>Sprint Backlog</b> es el subconjunto de historias que el
+                equipo seleccionó para el sprint actual.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <h3 class="font-bold text-xl mb-2 text-purple-600">
+                Sprints e Iteraciones
+              </h3>
+              <p class="text-sm text-gray-700">
+                Un lapso de tiempo corto y fijo (1-4 semanas) en el que el
+                equipo trabaja en un conjunto de Historias de Usuario
+                seleccionadas.
+              </p>
+              <p class="text-xs text-gray-500 mt-2">
+                Al final, se entrega un incremento de producto potencialmente
+                funcional.
+              </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-50 border border-gray-200">
+              <h3 class="font-bold text-xl mb-2 text-green-600">
+                Velocidad (Velocity)
+              </h3>
+              <p class="text-sm text-gray-700">
+                El número de puntos de historia entregados por el equipo durante
+                un sprint.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="roles-rituals" class="mb-16">
+          <h2 class="text-3xl font-bold text-center mb-8">
+            Roles y Rituales Clave
+          </h2>
+          <div class="flex justify-center mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <span class="text-6xl text-teal-500">👑</span>
+                <h3 class="font-bold text-xl mt-4 mb-2">Product Owner</h3>
+                <p class="text-sm text-gray-700 text-center">
+                  Es la voz del cliente y los stakeholders. Su principal
+                  responsabilidad es maximizar el valor del producto gestionando
+                  el Product Backlog de manera efectiva.
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <span class="text-6xl text-blue-500">🛠️</span>
+                <h3 class="font-bold text-xl mt-4 mb-2">Scrum Master</h3>
+                <p class="text-sm text-gray-700 text-center">
+                  Es un facilitador y "líder de servicio". Asegura que el equipo
+                  siga los principios de Scrum, elimina impedimentos y protege
+                  al equipo de interrupciones.
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <span class="text-6xl text-purple-500">👷</span>
+                <h3 class="font-bold text-xl mt-4 mb-2">Equipo de Entrega</h3>
+                <p class="text-sm text-gray-700 text-center">
+                  El grupo de profesionales (programadores, testers, etc.) que
+                  crean el incremento de producto. Son auto-organizados y
+                  multifuncionales.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+            <h3 class="text-2xl font-bold text-center mb-4">
+              El Ciclo de un Sprint
+            </h3>
+            <div class="flex items-center justify-center space-x-2 mb-4">
+              <div class="icon-box"><span class="text-2xl">👑</span></div>
+              <div class="icon-box"><span class="text-2xl">🛠️</span></div>
+              <div class="icon-box"><span class="text-2xl">👷</span></div>
+            </div>
+            <div class="flex flex-col items-stretch space-y-4 max-w-lg mx-auto">
+              <div class="flowchart-node">1. Planificación del Sprint</div>
+              <div class="flowchart-connector"></div>
+              <div class="flowchart-node">
+                2. Reunión Diaria (Daily Stand-up)
+              </div>
+              <div class="flowchart-connector"></div>
+              <div class="flowchart-node">3. Trabajo del Equipo</div>
+              <div class="flowchart-connector"></div>
+              <div class="flowchart-node">4. Revisión del Sprint</div>
+              <div class="flowchart-connector"></div>
+              <div class="flowchart-node">5. Retrospectiva</div>
+            </div>
+            <div class="mt-8 text-center text-gray-700">
+              <p class="mb-2">
+                <strong class="text-teal-600">Planificación del Sprint:</strong>
+                El equipo selecciona el trabajo del Product Backlog para el
+                sprint.
+              </p>
+              <p class="mb-2">
+                <strong class="text-teal-600">Daily Stand-up:</strong>
+                Sincronización diaria del equipo para revisar el progreso y
+                discutir impedimentos.
+              </p>
+              <p class="mb-2">
+                <strong class="text-teal-600">Revisión del Sprint:</strong> El
+                equipo demuestra el incremento de producto a los stakeholders.
+              </p>
+              <p class="mb-2">
+                <strong class="text-teal-600">Retrospectiva:</strong> El equipo
+                reflexiona sobre el proceso de trabajo para mejorar en el
+                próximo sprint.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="visual-tools" class="mb-16">
+          <h2 class="text-3xl font-bold text-center mb-8">
+            Herramientas Visuales
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <h3 class="text-2xl font-bold text-center mb-4">
+                Burn Down Chart
+              </h3>
+              <div class="chart-container">
+                <canvas id="burnDownChart"></canvas>
+              </div>
+              <p class="text-center mt-4 text-sm text-gray-600">
+                Muestra el trabajo restante en un sprint (o proyecto) a lo largo
+                del tiempo, comparando el progreso real con el ideal.
+              </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6">
+              <h3 class="text-2xl font-bold text-center mb-4">
+                Tablero Kanban
+              </h3>
+              <div
+                class="grid grid-cols-3 gap-2 text-center text-white font-bold text-sm md:text-base"
+              >
+                <div class="bg-red-500 p-2 rounded-md">To-Do</div>
+                <div class="bg-yellow-500 p-2 rounded-md">In Progres</div>
+                <div class="bg-green-500 p-2 rounded-md">Done</div>
+              </div>
+              <div
+                class="grid grid-cols-3 gap-2 text-center mt-4 text-gray-800"
+              >
+                <div class="flex flex-col space-y-2">
+                  <div
+                    class="bg-gray-100 p-2 rounded-md border border-gray-200 shadow-sm"
+                  >
+                    Historia de Usuario A
+                  </div>
+                  <div
+                    class="bg-gray-100 p-2 rounded-md border border-gray-200 shadow-sm"
+                  >
+                    Historia de Usuario B
+                  </div>
+                </div>
+                <div class="flex flex-col space-y-2">
+                  <div
+                    class="bg-gray-100 p-2 rounded-md border border-gray-200 shadow-sm"
+                  >
+                    Historia de Usuario C
+                  </div>
+                </div>
+                <div class="flex flex-col space-y-2">
+                  <div
+                    class="bg-gray-100 p-2 rounded-md border border-gray-200 shadow-sm"
+                  >
+                    Historia de Usuario D
+                  </div>
+                </div>
+              </div>
+              <p class="text-center mt-6 text-sm text-gray-600">
+                Herramienta visual que muestra el flujo de trabajo del equipo.
+                Las tarjetas se mueven entre columnas que representan las etapas
+                del proceso.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section id="visual-tools" class="mb-16">
+          <h2 class="text-3xl font-bold text-center mb-8">Evidencias de uso</h2>
+          <div class="flex justify-center mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <h3 class="font-bold text-xl mt-4 mb-2">Open AI</h3>
+                <iframe
+                  width="200"
+                  src="https://www.youtube.com/embed/QrncPX4fIHk?si=Ho4RzVG2QrMH3-f0&amp;start=3103"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen
+                ></iframe>
+                <br />
+                <p class="text-sm text-gray-700 text-center">
+                  En esta entrevista comenta brevemente como en OpenAI no
+                  tienen claramente una figura formal de Scrum Master o Agile
+                  Coach; quizá alguien cumpla ese rol en algún equipo, pero no
+                  está institucionalizado. Usan el modelo, pero de forma flexible.
+                </p>
+              </div>
+
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <h3 class="font-bold text-xl mt-4 mb-2">Tesla</h3>
+                <iframe
+                  width="200px"
+                  src="https://www.youtube.com/embed/6FUMNShU22w"
+                  title="Tesla Demo"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                >
+                </iframe>
+                <br />
+                <p class="text-sm text-gray-700 text-center">
+                  En este video se explora el poder de la innovación con el caso
+                  de estudio sobre el metodo ágil en Tesla. Describe por qué Tesla es una
+                  empresa tan innovadora y explica cómo son capaces de construir
+                  autos como ninguna otra compañía de autos en el mundo.
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <h3 class="font-bold text-xl mt-4 mb-2">Otro</h3>
+                <p class="text-sm text-gray-700 text-center">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum provident natus deleniti totam odit inventore harum exercitationem aliquam. Praesentium accusamus, assumenda repellat laboriosam et doloremque rem ullam harum deleniti reiciendis?
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <h3 class="font-bold text-xl mt-4 mb-2">Otro</h3>
+                <p class="text-sm text-gray-700 text-center">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum provident natus deleniti totam odit inventore harum exercitationem aliquam. Praesentium accusamus, assumenda repellat laboriosam et doloremque rem ullam harum deleniti reiciendis?
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Lógica para el Burn Down Chart
+      const burnDownCtx = document
+        .getElementById("burnDownChart")
+        .getContext("2d");
+      new Chart(burnDownCtx, {
+        type: "line",
+        data: {
+          labels: [
+            "Día 0",
+            "Día 1",
+            "Día 2",
+            "Día 3",
+            "Día 4",
+            "Día 5",
+            "Día 6",
+            "Día 7",
+            "Día 8",
+            "Día 9",
+            "Día 10",
+          ],
+          datasets: [
+            {
+              label: "Progreso Ideal",
+              data: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0],
+              borderColor: "#4ECDC4",
+              backgroundColor: "rgba(78, 205, 196, 0.2)",
+              fill: false,
+              tension: 0.1,
+            },
+            {
+              label: "Progreso Real",
+              data: [100, 95, 85, 75, 66, 50, 38, 32, 22, 6, 0],
+              borderColor: "#FF6B6B",
+              backgroundColor: "rgba(255, 107, 107, 0.2)",
+              fill: false,
+              tension: 0.1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            title: {
+              display: true,
+              text: "Ejemplo de Burn Down Chart (Sprint de 2 semanas)",
+              font: { size: 16 },
+            },
+            tooltip: {
+              callbacks: {
+                title: (tooltipItems) => tooltipItems[0].label,
+              },
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Puntos de Historia Restantes",
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Días del Sprint",
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
