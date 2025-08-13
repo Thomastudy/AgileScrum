@@ -78,6 +78,22 @@
         background-color: #e2e8f0;
         border-radius: 50%;
       }
+      /* Estilos para la nueva presentación de las metodologías ágiles */
+      .methodology-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+      }
+      .manifesto-card {
+        background-color: #f7fafc;
+        border-left: 4px solid #63b3ed;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      }
     </style>
   </head>
   <body class="text-gray-800">
@@ -91,6 +107,80 @@
           metodología que está transformando la entrega de proyectos.
         </p>
       </header>
+
+      <!-- Sección de los 4 Valores del Manifiesto Ágil con más protagonismo -->
+      <section
+        id="agile-manifesto"
+        class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8"
+      >
+        <a
+          target="_blank"
+          href="https://agilemanifesto.org/iso/es/manifesto.html"
+        >
+          <h2 class="text-3xl font-bold text-center mb-8">
+            Los 4 Valores Fundamentales del Manifiesto Ágil
+          </h2>
+        </a>
+        <p class="text-center text-gray-700 max-w-3xl mx-auto mb-10">
+          El Manifiesto Ágil prioriza los elementos de la izquierda por encima
+          de los de la derecha para lograr una mayor flexibilidad y capacidad de
+          respuesta.
+        </p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div
+            class="manifesto-card flex items-center justify-between p-4 bg-blue-100 rounded-lg shadow-md"
+          >
+            <h3 class="font-bold text-lg md:text-xl text-blue-800">
+              Individuos e interacciones
+            </h3>
+            <span class="text-blue-500 text-1xl font-extrabold mx-4"
+              >antes que</span
+            >
+            <p class="text-sm md:text-base text-gray-700 font-semibold">
+              procesos y herramientas
+            </p>
+          </div>
+          <div
+            class="manifesto-card flex items-center justify-between p-4 bg-blue-100 rounded-lg shadow-md"
+          >
+            <h3 class="font-bold text-lg md:text-xl text-blue-800">
+              Software funcionando
+            </h3>
+            <span class="text-blue-500 text-1xl font-extrabold mx-4"
+              >antes que</span
+            >
+            <p class="text-sm md:text-base text-gray-700 font-semibold">
+              documentación extensiva
+            </p>
+          </div>
+          <div
+            class="manifesto-card flex items-center justify-between p-4 bg-blue-100 rounded-lg shadow-md"
+          >
+            <h3 class="font-bold text-lg md:text-xl text-blue-800">
+              Colaboración con el cliente
+            </h3>
+            <span class="text-blue-500 text-1xl font-extrabold mx-4"
+              >antes que</span
+            >
+            <p class="text-sm md:text-base text-gray-700 font-semibold">
+              negociación contractual
+            </p>
+          </div>
+          <div
+            class="manifesto-card flex items-center justify-between p-4 bg-blue-100 rounded-lg shadow-md"
+          >
+            <h3 class="font-bold text-lg md:text-xl text-blue-800">
+              Respuesta ante el cambio
+            </h3>
+            <span class="text-blue-500 text-1xl font-extrabold mx-4"
+              >antes que</span
+            >
+            <p class="text-sm md:text-base text-gray-700 font-semibold">
+              seguir un plan
+            </p>
+          </div>
+        </div>
+      </section>
 
       <main>
         <section
@@ -162,7 +252,7 @@
                   <p class="text-4xl">❌</p>
                   <p class="text-sm mt-2 text-gray-600">
                     No construyas todo si lo que el cliente realmente necesita
-                    es esto:
+                    un minimo
                   </p>
                 </div>
                 <div class="text-center p-4">
@@ -242,6 +332,11 @@
                 </p>
               </div>
             </div>
+          </div>
+          <div
+            class="flex flex-col items-center max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md mt-8"
+          >
+            <img src="./archivos/EjemploAgile.png" alt="Imagen del contraste visual del enfoque tradicional vs. ágil" class="w-full max-w-lg " />
           </div>
         </section>
 
@@ -511,7 +606,7 @@
           </div>
           <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
             <h3 class="text-2xl font-bold text-center mb-4">
-              El Ciclo de un Sprint
+              El Ciclo de un Sprint (scrum)
             </h3>
             <div class="flex items-center justify-center space-x-2 mb-4">
               <div class="icon-box"><span class="text-2xl">👑</span></div>
@@ -580,7 +675,7 @@
                 class="grid grid-cols-3 gap-2 text-center text-white font-bold text-sm md:text-base"
               >
                 <div class="bg-red-500 p-2 rounded-md">To-Do</div>
-                <div class="bg-yellow-500 p-2 rounded-md">In Progres</div>
+                <div class="bg-yellow-500 p-2 rounded-md">In Progress</div>
                 <div class="bg-green-500 p-2 rounded-md">Done</div>
               </div>
               <div
@@ -621,6 +716,346 @@
             </div>
           </div>
         </section>
+
+        <section
+          id="agile-types"
+          class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8"
+        >
+          <h2 class="text-3xl font-bold text-center mb-8">
+            Tipos de Metodologías Ágiles
+          </h2>
+          <p class="text-center text-gray-700 max-w-3xl mx-auto mb-8">
+            La metodología ágil es una filosofía, y las metodologías son marcos
+            de trabajo específicos para aplicar esa filosofía. Aquí te
+            explicamos las más importantes con un formato de tarjetas para
+            facilitar la lectura.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Tarjeta para Scrum -->
+            <div class="methodology-card border-l-4 border-teal-600">
+              <h3 class="font-bold text-2xl mb-4 text-teal-600">Scrum</h3>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-lg text-gray-800">
+                    Principios Clave:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      Roles Definidos: <strong>Product Owner</strong>,
+                      <strong>Scrum Master</strong> y
+                      <strong>Development Team</strong>.
+                    </li>
+                    <li>
+                      Rituales (Ceremonias): Planificación, Reunión Diaria,
+                      Revisión y Retrospectiva del Sprint.
+                    </li>
+                    <li>
+                      Artefactos: Product Backlog, Sprint Backlog e Incremento
+                      de Producto.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-green-600">
+                    Ventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Estructura clara que facilita la adopción inicial.</li>
+                    <li>Adaptabilidad gracias a las retrospectivas.</li>
+                    <li>Mucha transparencia en el progreso del proyecto.</li>
+                    <li>Ideal para proyectos con requisitos cambiantes.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-red-600">
+                    Desventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      Poca flexibilidad una vez que un Sprint ha comenzado.
+                    </li>
+                    <li>
+                      Los rituales pueden sentirse excesivos en equipos
+                      pequeños.
+                    </li>
+                    <li>Escalar a equipos muy grandes puede ser complicado.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta para Kanban -->
+            <div class="methodology-card border-l-4 border-red-600">
+              <h3 class="font-bold text-2xl mb-4 text-red-600">Kanban</h3>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-lg text-gray-800">
+                    Principios Clave:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Visualizar el flujo de trabajo en un tablero.</li>
+                    <li>Limitar el trabajo en progreso (WIP).</li>
+                    <li>Medir y mejorar constantemente el flujo de trabajo.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-green-600">
+                    Ventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Muy flexible, permite cambios en cualquier momento.</li>
+                    <li>
+                      Simple de adoptar, se integra fácilmente a procesos
+                      existentes.
+                    </li>
+                    <li>El tablero es muy visual y transparente para todos.</li>
+                    <li>
+                      Ideal para tareas impredecibles como el mantenimiento.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-red-600">
+                    Desventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      Menos estructura, puede llevar a falta de disciplina.
+                    </li>
+                    <li>Riesgo de que el alcance crezca sin control.</li>
+                    <li>No hay un "final del ciclo" definido.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta para eXtreme Programming (XP) -->
+            <div class="methodology-card border-l-4 border-blue-600">
+              <h3 class="font-bold text-2xl mb-4 text-blue-600">
+                eXtreme Programming (XP)
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-lg text-gray-800">
+                    Principios Clave:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Programación en Parejas.</li>
+                    <li>Desarrollo Dirigido por Pruebas (TDD).</li>
+                    <li>Integración Continua.</li>
+                    <li>Pequeñas entregas de software frecuente.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-green-600">
+                    Ventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Alta calidad del código y menos errores.</li>
+                    <li>
+                      Mejora la comunicación y el intercambio de conocimientos.
+                    </li>
+                    <li>
+                      Ideal para proyectos a largo plazo por su código limpio.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-red-600">
+                    Desventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Alto costo inicial por la programación en parejas.</li>
+                    <li>
+                      Curva de aprendizaje significativa para prácticas como
+                      TDD.
+                    </li>
+                    <li>
+                      Puede ser un enfoque muy intenso y agotador para el
+                      equipo.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta para Lean Software Development -->
+            <div class="methodology-card border-l-4 border-yellow-600">
+              <h3 class="font-bold text-2xl mb-4 text-yellow-600">
+                Lean Software Development
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-lg text-gray-800">
+                    Principios Clave:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Eliminar desperdicios (actividades sin valor).</li>
+                    <li>Entregar valor de forma rápida y continua.</li>
+                    <li>Construir la calidad desde el inicio.</li>
+                    <li>Respetar y empoderar a las personas.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-green-600">
+                    Ventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      Ayuda a los equipos a ser extremadamente eficientes.
+                    </li>
+                    <li>Enfoque en lo que realmente aporta valor.</li>
+                    <li>Muy útil para la optimización de procesos.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-red-600">
+                    Desventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Requiere una cultura fuerte de mejora continua.</li>
+                    <li>
+                      Sus principios son más filosóficos y pueden ser
+                      abstractos.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta para Crystal -->
+            <div class="methodology-card border-l-4 border-purple-600">
+              <h3 class="font-bold text-2xl mb-4 text-purple-600">Crystal</h3>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-lg text-gray-800">
+                    Principios Clave:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      La gente es lo primero: prioriza la comunicación y la
+                      colaboración.
+                    </li>
+                    <li>Simplificar al máximo: usar el mínimo de procesos.</li>
+                    <li>Comunicación cercana y directa.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-green-600">
+                    Ventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Altamente adaptable a la complejidad del proyecto.</li>
+                    <li>Promueve un ambiente de trabajo saludable.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-red-600">
+                    Desventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      Poca estructura, lo que puede confundir a equipos nuevos.
+                    </li>
+                    <li>
+                      Depende mucho de la disciplina y madurez del equipo.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta para DSDM -->
+            <div class="methodology-card border-l-4 border-orange-600">
+              <h3 class="font-bold text-2xl mb-4 text-orange-600">DSDM</h3>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-lg text-gray-800">
+                    Principios Clave:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Enfoque en el valor de negocio.</li>
+                    <li>Tiempo y presupuesto fijos, alcance variable.</li>
+                    <li>
+                      Colaboración activa y uso de la Priorización MoSCoW.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-green-600">
+                    Ventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      Ideal para proyectos con plazos y presupuestos estrictos.
+                    </li>
+                    <li>
+                      La Priorización MoSCoW asegura la entrega de un producto
+                      funcional.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-red-600">
+                    Desventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Menos flexible que otras metodologías ágiles.</li>
+                    <li>Es un marco más complejo para adoptar inicialmente.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta para SAFe -->
+            <div class="methodology-card border-l-4 border-sky-600">
+              <h3 class="font-bold text-2xl mb-4 text-sky-600">SAFe</h3>
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-semibold text-lg text-gray-800">
+                    Principios Clave:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      Alinea múltiples equipos ágiles hacia un objetivo común.
+                    </li>
+                    <li>
+                      Define roles y ceremonias para la coordinación a gran
+                      escala.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-green-600">
+                    Ventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>Ideal para empresas muy grandes.</li>
+                    <li>
+                      Permite la coordinación de cientos o miles de personas.
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-lg text-red-600">
+                    Desventajas:
+                  </h4>
+                  <ul class="list-disc pl-5 text-sm text-gray-700">
+                    <li>
+                      Muy burocrático y estructurado, lo que puede limitar la
+                      agilidad.
+                    </li>
+                    <li>
+                      Costoso y requiere una gran inversión de tiempo para
+                      implementar.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section id="visual-tools" class="mb-16">
           <h2 class="text-3xl font-bold text-center mb-8">Evidencias de uso</h2>
           <div class="flex justify-center mb-10">
@@ -640,10 +1075,10 @@
                 ></iframe>
                 <br />
                 <p class="text-sm text-gray-700 text-center">
-                  En esta entrevista comenta brevemente como en OpenAI no
-                  tienen claramente una figura formal de Scrum Master o Agile
-                  Coach; quizá alguien cumpla ese rol en algún equipo, pero no
-                  está institucionalizado. Usan el modelo, pero de forma flexible.
+                  En esta entrevista comenta brevemente como en OpenAI no tienen
+                  claramente una figura formal de Scrum Master o Agile Coach;
+                  quizá alguien cumpla ese rol en algún equipo, pero no está
+                  institucionalizado. Usan el modelo, pero de forma flexible.
                 </p>
               </div>
 
@@ -663,27 +1098,44 @@
                 <br />
                 <p class="text-sm text-gray-700 text-center">
                   En este video se explora el poder de la innovación con el caso
-                  de estudio sobre el metodo ágil en Tesla. Describe por qué Tesla es una
-                  empresa tan innovadora y explica cómo son capaces de construir
-                  autos como ninguna otra compañía de autos en el mundo.
-                </p>
-              </div>
-              <!-- <div
-                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
-              >
-                <h3 class="font-bold text-xl mt-4 mb-2">Otro</h3>
-                <p class="text-sm text-gray-700 text-center">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum provident natus deleniti totam odit inventore harum exercitationem aliquam. Praesentium accusamus, assumenda repellat laboriosam et doloremque rem ullam harum deleniti reiciendis?
+                  de estudio sobre el metodo ágil en Tesla. Describe por qué
+                  Tesla es una empresa tan innovadora y explica cómo son capaces
+                  de construir autos como ninguna otra compañía de autos en el
+                  mundo.
                 </p>
               </div>
               <div
                 class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
               >
-                <h3 class="font-bold text-xl mt-4 mb-2">Otro</h3>
+                <h3 class="font-bold text-xl mt-4 mb-2">Lego</h3>
+                <a
+                  target="_blank"
+                  href="https://www.dockconsulting.nl/wp-content/uploads/2021/03/Agile-at-Lego.pdf"
+                >
+                  <img
+                    style="height: 80px"
+                    src="./archivos/LegoLogo.png"
+                    alt=""
+                  />
+                </a>
+                <br />
+                <p>Resumen de audio:</p>
+                <audio controls class="w-full max-w-sm mx-auto">
+                  <!-- Puedes reemplazar 'tu_archivo_de_audio.mp3' con la URL de tu archivo de audio. -->
+                  <source
+                    src="./archivos/casoLgeoResumen.mp3"
+                    type="audio/mpeg"
+                  />
+                  Tu navegador no soporta el elemento de audio.
+                </audio>
+
+                <br />
                 <p class="text-sm text-gray-700 text-center">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum provident natus deleniti totam odit inventore harum exercitationem aliquam. Praesentium accusamus, assumenda repellat laboriosam et doloremque rem ullam harum deleniti reiciendis?
+                  Este documento, "Agile Transformation at LEGO Group", es un
+                  artículo que detalla el proceso que LEGO inició en 2018 para
+                  adoptar la metodología ágil en sus departamentos digitales.
                 </p>
-              </div> -->
+              </div>
             </div>
           </div>
         </section>
