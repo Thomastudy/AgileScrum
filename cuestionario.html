@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cuestionario de Metodología Agile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6;
+      }
+      .correct {
+        background-color: #d1fae5;
+        border-color: #10b981;
+      }
+      .incorrect {
+        background-color: #fee2e2;
+        border-color: #ef4444;
+      }
+      .correct-answer {
+        background-color: #d1fae5;
+        border-color: #10b981;
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8">
+    <button
+      onclick="window.history.back()"
+      class="fixed top-4 left-4 z-50 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700 transition-colors transform hover:scale-110"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        />
+      </svg>
+    </button>
+    <div
+      class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-gray-200"
+    >
+      <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">
+        Cuestionario: Metodología Agile
+      </h1>
+      <p class="text-center text-gray-600 mb-8">
+        Selecciona la cantidad de preguntas y haz clic en Iniciar.
+      </p>
+
+      <div id="quiz-options" class="flex flex-col items-center mb-8">
+        <div class="mb-4">
+          <label for="num-questions" class="text-lg font-semibold text-gray-700"
+            >Número de preguntas:</label
+          >
+          <select
+            id="num-questions"
+            class="ml-2 p-2 rounded-lg border border-gray-300"
+          >
+            <option value="10">10 preguntas</option>
+            <option value="20">20 preguntas</option>
+            <option value="all">Todas las preguntas</option>
+          </select>
+        </div>
+        <button
+          id="startButton"
+          class="w-full md:w-auto bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-blue-700 transition duration-300"
+        >
+          Iniciar Cuestionario
+        </button>
+      </div>
+
+      <form id="quizForm" class="hidden">
+        <div id="questions-container">
+          <!-- Questions will be dynamically inserted here -->
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-blue-700 transition duration-300"
+        >
+          Finalizar Cuestionario
+        </button>
+      </form>
+
+      <div id="results" class="mt-8 text-center hidden">
+        <h2 id="score-text" class="text-2xl font-bold mb-4 text-gray-800"></h2>
+        <button
+          onclick="location.reload()"
+          class="bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-xl shadow-md hover:bg-gray-300 transition duration-300"
+        >
+          Volver a Intentar
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const allQuestions = [
+        {
+          question:
+            "¿Cuál es la principal diferencia entre el enfoque tradicional (Cascada) y el enfoque ágil en la entrega de proyectos?",
+          options: {
+            a: "El enfoque tradicional no tiene un plan, mientras que el ágil sí.",
+            b: "El enfoque tradicional es flexible y acepta cambios, mientras que el ágil es rígido.",
+            c: "El enfoque ágil se basa en la entrega de valor en ciclos cortos y la adaptación, mientras que el tradicional se basa en un plan rígido y la entrega final del producto completo.",
+            d: "El enfoque ágil requiere menos reuniones que el tradicional.",
+          },
+          answer: "c",
+        },
+        {
+          question:
+            "¿Qué es una Historia de Usuario (`User Story`) en la metodología ágil?",
+          options: {
+            a: "Un documento técnico detallado para los desarrolladores.",
+            b: "Un resumen del presupuesto y el cronograma del proyecto.",
+            c: "Una descripción de una funcionalidad desde la perspectiva del usuario, enfocada en el valor.",
+            d: "Un plan de marketing para el producto.",
+          },
+          answer: "c",
+        },
+        {
+          question:
+            "¿Quién es el responsable de priorizar el `Product Backlog` y maximizar el valor del producto?",
+          options: {
+            a: "El `Scrum Master`",
+            b: "El `Development Team`",
+            c: "El `Product Owner`",
+            d: "El Gerente de Proyecto",
+          },
+          answer: "c",
+        },
+        {
+          question:
+            "¿Cuál es el propósito de la `Daily Stand-up` (Reunión Diaria de Pie)?",
+          options: {
+            a: "Discutir los problemas personales del equipo.",
+            b: "Sincronizar al equipo, identificar impedimentos y asegurar el progreso hacia el objetivo del sprint.",
+            c: "Darle un informe de progreso al `Product Owner`.",
+            d: "Planificar el siguiente sprint.",
+          },
+          answer: "b",
+        },
+        {
+          question: "¿Qué es el `MVP` (Producto Mínimo Viable)?",
+          options: {
+            a: "El producto final con todas las funcionalidades completas.",
+            b: "La versión más simple de un producto que tiene el valor suficiente para ser lanzado y obtener feedback.",
+            c: "Un prototipo no funcional para mostrar a los clientes.",
+            d: "El producto con el menor costo de desarrollo.",
+          },
+          answer: "b",
+        },
+        {
+          question:
+            "¿Cuál es el principal objetivo de la Retrospectiva (`Retrospective`) al final de un sprint?",
+          options: {
+            a: "Celebrar el éxito del equipo.",
+            b: "Demostrar el incremento de producto a los stakeholders.",
+            c: "Reflexionar sobre el proceso de trabajo del equipo e identificar mejoras.",
+            d: "Decidir qué historias de usuario se trabajarán en el siguiente sprint.",
+          },
+          answer: "c",
+        },
+        {
+          question: "¿Qué es un `Sprint`?",
+          options: {
+            a: "Una lista de tareas pendientes.",
+            b: "Un ciclo de trabajo corto y fijo para entregar un incremento de producto.",
+            c: "Una reunión de planificación.",
+            d: "El tiempo total del proyecto.",
+          },
+          answer: "b",
+        },
+        {
+          question:
+            "En el caso de LEGO, ¿cuál fue uno de los resultados más importantes de la transformación ágil?",
+          options: {
+            a: "Un aumento en el presupuesto para sus departamentos digitales.",
+            b: "Una reducción significativa en el tiempo para responder a los cambios del mercado.",
+            c: "Un retorno completo a la producción de juguetes de madera.",
+            d: "La creación de una nueva división de marketing.",
+          },
+          answer: "b",
+        },
+        {
+          question:
+            '¿Qué rol actúa como "líder de servicio" para el equipo, eliminando impedimentos y asegurando que se sigan las reglas de la metodología?',
+          options: {
+            a: "El `Product Owner`",
+            b: "El `Scrum Master`",
+            c: "El CEO de la empresa",
+            d: "El `Development Team`",
+          },
+          answer: "b",
+        },
+        {
+          question:
+            "¿Cuál de los siguientes no es un principio clave de la metodología Agile?",
+          options: {
+            a: "El software que funciona es la principal medida de progreso.",
+            b: "El método más eficiente de comunicación es el correo electrónico.",
+            c: "La simplicidad es esencial.",
+            d: "Se promueve el desarrollo sostenible.",
+          },
+          answer: "b",
+        },
+        {
+          question: "¿Qué es el `Sprint Review`?",
+          options: {
+            a: "Una reunión para discutir los salarios del equipo.",
+            b: "Una demostración del trabajo completado en un sprint a los stakeholders.",
+            c: "Una reunión para planificar el siguiente sprint.",
+            d: "Una reunión para asignar tareas al equipo.",
+          },
+          answer: "b",
+        },
+        {
+          question: "¿Qué es el `Product Backlog`?",
+          options: {
+            a: "Una lista de bugs para arreglar en el proyecto.",
+            b: "Una lista priorizada de todas las funcionalidades y mejoras del producto.",
+            c: "Una lista de tareas que el equipo debe completar en un día.",
+            d: "Un documento que describe la arquitectura del sistema.",
+          },
+          answer: "b",
+        },
+        {
+          question: "¿Qué es un `Daily Stand-up`?",
+          options: {
+            a: "Una reunión larga para debatir problemas complejos.",
+            b: "Una reunión diaria de 15 minutos para sincronizar al equipo.",
+            c: "Una reunión para evaluar el desempeño de los miembros del equipo.",
+            d: "Una reunión con el cliente para revisar el progreso.",
+          },
+          answer: "b",
+        },
+        {
+          question:
+            "¿Cuál es el enfoque principal de `Extreme Programming` (XP)?",
+          options: {
+            a: "Minimizar la comunicación en el equipo.",
+            b: "La excelencia técnica y la entrega continua de software de alta calidad.",
+            c: "La visualización del flujo de trabajo con un tablero.",
+            d: "La eliminación de todos los rituales y ceremonias.",
+          },
+          answer: "b",
+        },
+        {
+          question: "¿Para qué se utiliza un `Burn down Chart`?",
+          options: {
+            a: "Para monitorear el progreso del equipo en un sprint.",
+            b: "Para planificar el presupuesto del proyecto.",
+            c: "Para visualizar el flujo de trabajo del equipo.",
+            d: "Para gestionar las vacaciones de los miembros del equipo.",
+          },
+          answer: "a",
+        },
+        {
+          question: "¿Qué es `Kanban`?",
+          options: {
+            a: "Una metodología con sprints fijos y roles definidos.",
+            b: "Una metodología que se enfoca en la visualización del trabajo y la mejora del flujo.",
+            c: "Una técnica de programación en pareja.",
+            d: "Una técnica para gestionar el presupuesto de un proyecto.",
+          },
+          answer: "b",
+        },
+        {
+          question: "¿Cuál es el principal objetivo de una `Retrospectiva`?",
+          options: {
+            a: "Culpar a los miembros del equipo por los errores.",
+            b: "Planificar las tareas para el próximo sprint.",
+            c: "Reflexionar sobre el proceso de trabajo del equipo e identificar mejoras.",
+            d: "Negociar el contrato con el cliente.",
+          },
+          answer: "c",
+        },
+        {
+          question:
+            "¿Qué rol es responsable de crear y mantener el `Product Backlog`?",
+          options: {
+            a: "El `Scrum Master`",
+            b: "El `Development Team`",
+            c: "El `Product Owner`",
+            d: "El Gerente de Proyecto",
+          },
+          answer: "c",
+        },
+        {
+          question:
+            "¿Qué rol protege al equipo de interrupciones externas y elimina impedimentos?",
+          options: {
+            a: "El `Product Owner`",
+            b: "El `Scrum Master`",
+            c: "El `Development Team`",
+            d: "El cliente",
+          },
+          answer: "b",
+        },
+        {
+          question:
+            "¿Qué rol es el responsable de la entrega del `Incremento de Producto` funcional?",
+          options: {
+            a: "El `Product Owner`",
+            b: "El `Scrum Master`",
+            c: "El `Development Team`",
+            d: "El Gerente de Proyecto",
+          },
+          answer: "c",
+        },
+        {
+          question: "¿Qué es el `MoSCoW` en la metodología Agile?",
+          options: {
+            a: "Una ciudad en Rusia.",
+            b: "Un método de priorización de requisitos.",
+            c: "Un tipo de ceremonia de Scrum.",
+            d: "Una herramienta de gestión de proyectos.",
+          },
+          answer: "b",
+        },
+        {
+          question: "¿Cuál es el objetivo principal del `Sprint 0`?",
+          options: {
+            a: "Entregar el primer incremento de producto al cliente.",
+            b: "Preparar el terreno para los sprints de desarrollo.",
+            c: "Realizar una retrospectiva del proyecto.",
+            d: "Definir el presupuesto final del proyecto.",
+          },
+          answer: "b",
+        },
+        {
+          question:
+            '¿Qué principio ágil se relaciona con la frase: "Las mejores arquitecturas, requisitos y diseños emergen de equipos auto-organizados"?',
+          options: {
+            a: "El software que funciona es la principal medida de progreso.",
+            b: "La simplicidad, el arte de maximizar la cantidad de trabajo no realizado, es esencial.",
+            c: "Los procesos ágiles promueven el desarrollo sostenible.",
+            d: "Ninguna de las anteriores.",
+          },
+          answer: "d",
+        },
+        {
+          question: "¿Qué mide los `Story Points`?",
+          options: {
+            a: "La cantidad de horas necesarias para completar una tarea.",
+            b: "La cantidad de líneas de código que se deben escribir.",
+            c: "El esfuerzo, la complejidad y la incertidumbre de una tarea.",
+            d: "El costo económico de una historia de usuario.",
+          },
+          answer: "c",
+        },
+        {
+          question: "En Scrum, ¿qué se entrega al final de un sprint?",
+          options: {
+            a: "Un plan detallado para el próximo sprint.",
+            b: "Una lista de bugs corregidos.",
+            c: "Un incremento de producto potencialmente funcional.",
+            d: "Un informe de progreso del equipo.",
+          },
+          answer: "c",
+        },
+        {
+          question:
+            '¿Qué significa la frase "Individuals and interactions over processes and tools" del Manifiesto Ágil?',
+          options: {
+            a: "Las herramientas son más importantes que la gente.",
+            b: "La comunicación y colaboración humana son más valiosas que los procesos rígidos y las herramientas.",
+            c: "Los procesos y herramientas son lo único que importa.",
+            d: "La interacción debe ser siempre por correo electrónico.",
+          },
+          answer: "b",
+        },
+        {
+          question: "¿Cuál es el objetivo de un `Daily Stand-up`?",
+          options: {
+            a: "Dar un informe de progreso al `Scrum Master`.",
+            b: "Sincronizar al equipo sobre lo que hicieron ayer, lo que harán hoy, y los impedimentos.",
+            c: "Planificar el trabajo para todo el sprint.",
+            d: "Debatir soluciones técnicas a fondo.",
+          },
+          answer: "b",
+        },
+        {
+          question:
+            "¿Qué tipo de metodología se centra en la visualización del flujo de trabajo y en limitar el trabajo en progreso?",
+          options: {
+            a: "Scrum",
+            b: "Extreme Programming (XP)",
+            c: "Kanban",
+            d: "DSDM",
+          },
+          answer: "c",
+        },
+        {
+          question:
+            "¿Cuál es una de las desventajas del método ágil en el caso de LEGO, según el documento?",
+          options: {
+            a: "El aumento de la burocracia.",
+            b: "La falta de motivación de los empleados.",
+            c: 'La tentación de "hacer" Agile sin "ser" Agile.',
+            d: "Los retrasos en la entrega de productos.",
+          },
+          answer: "c",
+        },
+        {
+          question: "¿Qué es el rol de `Scrum Master` en un equipo?",
+          options: {
+            a: "Liderar el equipo en la toma de decisiones técnicas.",
+            b: "Gestionar el presupuesto y el cronograma del proyecto.",
+            c: "Facilitar el proceso, eliminar impedimentos y proteger al equipo.",
+            d: "Priorizar las historias de usuario en el `Product Backlog`.",
+          },
+          answer: "c",
+        },
+      ];
+
+      document
+        .getElementById("startButton")
+        .addEventListener("click", function () {
+          const numQuestionsSelect = document.getElementById("num-questions");
+          let numQuestions =
+            numQuestionsSelect.value === "all"
+              ? allQuestions.length
+              : parseInt(numQuestionsSelect.value, 10);
+
+          // Hide options and show quiz form
+          document.getElementById("quiz-options").classList.add("hidden");
+          document.getElementById("quizForm").classList.remove("hidden");
+
+          const selectedQuestions = getRandomQuestions(
+            allQuestions,
+            numQuestions
+          );
+          renderQuestions(selectedQuestions);
+        });
+
+      document
+        .getElementById("quizForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const form = e.target;
+          const questionContainers = document.querySelectorAll(
+            "#questions-container > div"
+          );
+          let score = 0;
+
+          const quizAnswers =
+            questionContainers.length > 0
+              ? getAnswersFromRenderedQuestions()
+              : {};
+
+          questionContainers.forEach((container, index) => {
+            const questionName = `q${index + 1}`;
+            const selectedOption = form.elements[questionName].value;
+            const correctAnswer = quizAnswers[questionName];
+
+            const labels = container.querySelectorAll("label");
+            labels.forEach((label) => {
+              label.classList.remove(
+                "correct",
+                "incorrect",
+                "correct-answer",
+                "p-2",
+                "border",
+                "rounded-lg",
+                "font-semibold"
+              );
+              label.classList.add("block");
+            });
+
+            const correctLabel = container
+              .querySelector(
+                `input[name="${questionName}"][value="${correctAnswer}"]`
+              )
+              .closest("label");
+
+            if (selectedOption) {
+              if (selectedOption === correctAnswer) {
+                score++;
+                correctLabel.classList.add(
+                  "correct",
+                  "p-2",
+                  "border",
+                  "rounded-lg",
+                  "font-semibold"
+                );
+              } else {
+                const selectedLabel = container
+                  .querySelector(
+                    `input[name="${questionName}"][value="${selectedOption}"]`
+                  )
+                  .closest("label");
+                selectedLabel.classList.add(
+                  "incorrect",
+                  "p-2",
+                  "border",
+                  "rounded-lg",
+                  "font-semibold"
+                );
+                correctLabel.classList.add(
+                  "correct-answer",
+                  "p-2",
+                  "border",
+                  "rounded-lg",
+                  "font-semibold"
+                );
+              }
+            } else {
+              correctLabel.classList.add(
+                "correct-answer",
+                "p-2",
+                "border",
+                "rounded-lg",
+                "font-semibold"
+              );
+            }
+
+            // Disable all radio buttons after submission
+            form.elements[questionName].forEach(
+              (radio) => (radio.disabled = true)
+            );
+          });
+
+          const resultsDiv = document.getElementById("results");
+          const scoreText = document.getElementById("score-text");
+          scoreText.textContent = `Obtuviste ${score} de ${questionContainers.length} respuestas correctas.`;
+          resultsDiv.classList.remove("hidden");
+        });
+
+      function getRandomQuestions(questions, num) {
+        if (num >= questions.length) {
+          return questions;
+        }
+        const shuffled = [...questions].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, num);
+      }
+
+      function renderQuestions(questions) {
+        const container = document.getElementById("questions-container");
+        container.innerHTML = "";
+        questions.forEach((q, index) => {
+          const questionHTML = `
+                    <div class="mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 class="text-lg md:text-xl font-bold text-gray-700 mb-4">${
+                          index + 1
+                        }. ${q.question}</h3>
+                        <div class="space-y-4">
+                            ${Object.entries(q.options)
+                              .map(
+                                ([key, value]) => `
+                                <label class="block">
+                                    <input type="radio" name="q${
+                                      index + 1
+                                    }" value="${key}" class="mr-2">
+                                    <span>${key}) ${value}</span>
+                                </label>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                `;
+          container.innerHTML += questionHTML;
+        });
+      }
+
+      function getAnswersFromRenderedQuestions() {
+        const answers = {};
+        const questions = document.getElementById(
+          "questions-container"
+        ).children;
+        const originalQuestions = Array.from(questions).map((qHtml) => {
+          const h3 = qHtml.querySelector("h3");
+          const text = h3.textContent
+            .substring(h3.textContent.indexOf(".") + 1)
+            .trim();
+          return allQuestions.find((q) => q.question === text);
+        });
+        originalQuestions.forEach((q, index) => {
+          answers[`q${index + 1}`] = q.answer;
+        });
+        return answers;
+      }
+    </script>
+  </body>
+</html>

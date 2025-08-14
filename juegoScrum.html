@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Scrum Profesional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+        }
+        .board-column {
+            background-color: #f9fafb;
+            border: 2px solid #e5e7eb;
+            min-height: 250px;
+        }
+        .user-story-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .user-story-card:hover {
+            transform: translateY(-3px);
+        }
+        .card-points {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 9999px;
+        }
+        .story-1-point { background-color: #d1fae5; color: #065f46; }
+        .story-2-points { background-color: #bae6fd; color: #075985; }
+        .story-3-points { background-color: #e0e7ff; color: #3730a3; }
+        .story-5-points { background-color: #fce7f3; color: #831843; }
+        .story-8-points { background-color: #fef9c3; color: #854d0e; }
+        .hidden-message {
+            display: none;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex flex-col justify-center items-center">
+    <!-- Contenedor principal de la aplicación -->
+    <div id="game-container" class="max-w-7xl mx-auto w-full bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-gray-200">
+        <!-- Pantalla de inicio -->
+        <div id="start-screen" class="text-center p-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Simulador de Scrum Profesional</h1>
+            <p class="text-lg text-gray-600 mb-8">
+                ¡Bienvenido! Este simulador te permitirá poner en práctica los conceptos de la metodología Scrum.
+                Planifica tu sprint, realiza las reuniones diarias y entrega valor al cliente.
+            </p>
+            <button id="startButton" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-blue-700 transition duration-300">
+                Iniciar Juego
+            </button>
+        </div>
+
+        <!-- Pantalla del juego -->
+        <div id="game-screen" class="hidden">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-6">Sprint <span id="sprint-number">1</span></h1>
+            
+            <!-- Barra de control del sprint -->
+            <div class="flex justify-between items-center bg-blue-50 p-4 rounded-xl shadow-inner mb-6">
+                <div class="flex items-center space-x-4">
+                    <p class="font-semibold text-gray-700">Día del sprint: <span id="sprint-day" class="font-bold text-lg text-blue-600">1</span>/5</p>
+                    <p class="font-semibold text-gray-700 hidden-message" id="daily-actions-message">Acciones restantes: <span id="daily-actions" class="font-bold text-lg text-green-600">--</span></p>
+                </div>
+                <div id="sprint-metrics" class="flex space-x-4 items-center">
+                    <p class="font-semibold text-gray-700">Velocidad: <span id="velocity-display" class="font-bold text-lg text-indigo-600">--</span></p>
+                </div>
+                <div id="sprint-actions" class="flex space-x-4">
+                    <button id="planSprintButton" class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:bg-indigo-700 transition duration-300">
+                        Planificar Sprint
+                    </button>
+                    <button id="dailyStandupButton" class="bg-green-600 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:bg-green-700 transition duration-300" disabled>
+                        Daily Stand-up
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gráfico Burndown -->
+            <div class="bg-gray-50 p-4 rounded-xl shadow-sm mb-6">
+                <h2 class="text-xl font-bold text-gray-700 mb-2 text-center">Burndown Chart</h2>
+                <canvas id="burndownChart" width="800" height="250"></canvas>
+            </div>
+            
+            <!-- Tablero de Scrum -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Columna de Product Backlog -->
+                <div class="board-column p-4 rounded-xl shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">Product Backlog</h2>
+                    <div id="product-backlog" class="space-y-3">
+                        <!-- Las historias de usuario se renderizarán aquí -->
+                    </div>
+                </div>
+                <!-- Columna de Sprint Backlog -->
+                <div class="board-column p-4 rounded-xl shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">Sprint Backlog</h2>
+                    <div id="sprint-backlog" class="space-y-3">
+                        <!-- Las historias de usuario del sprint se renderizarán aquí -->
+                    </div>
+                </div>
+                <!-- Columna de En Progreso -->
+                <div class="board-column p-4 rounded-xl shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">En Progreso</h2>
+                    <div id="in-progress" class="space-y-3">
+                        <!-- Las historias que están "en progreso" se moverán aquí -->
+                    </div>
+                </div>
+                <!-- Columna de Terminado -->
+                <div class="board-column p-4 rounded-xl shadow-sm">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">Terminado</h2>
+                    <div id="done" class="space-y-3">
+                        <!-- Las historias terminadas se moverán aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para el Objetivo del Sprint -->
+        <div id="goal-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex justify-center items-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-xl w-full">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Objetivo del Sprint</h2>
+                <p id="sprint-goal-text" class="text-lg text-gray-700 font-semibold mb-4"></p>
+                <p class="text-gray-600">Este es el objetivo que tu equipo ha definido. Durante la `Sprint Planning`, deberás elegir las historias de usuario que contribuyan a lograr esta meta.</p>
+                <button id="goToPlanButton" class="w-full mt-6 bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:bg-blue-700 transition duration-300">
+                    Ir a la Planificación
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal para la planificación del sprint -->
+        <div id="plan-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex justify-center items-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Planificación del Sprint</h2>
+                <p id="plan-message" class="text-gray-600 mb-4">Elige las historias de usuario del `Product Backlog` para el sprint.</p>
+                <div id="plan-backlog-list" class="space-y-3 max-h-80 overflow-y-auto mb-4">
+                    <!-- Lista de historias de usuario para planificar -->
+                </div>
+                <div class="flex justify-between items-center border-t pt-4">
+                    <p class="text-lg font-bold text-gray-700">Puntos seleccionados: <span id="selected-points" class="text-blue-600">0</span> / 20</p>
+                    <button id="commitSprintButton" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:bg-blue-700 transition duration-300" disabled>
+                        Comprometer Sprint
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para el Daily Stand-up -->
+        <div id="standup-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex justify-center items-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-xl w-full">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Daily Stand-up</h2>
+                <p id="standup-message" class="text-gray-600 mb-4">
+                    ¡Buenos días! Es el día <span id="current-standup-day"></span> del sprint.
+                    Tienes <span id="standup-actions-count" class="font-bold text-green-600"></span> acciones para el día de hoy.
+                </p>
+                <div id="standup-list-container" class="space-y-3 max-h-80 overflow-y-auto mb-4">
+                    <!-- Lista de historias para el daily -->
+                </div>
+                <button id="closeStandupButton" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:bg-blue-700 transition duration-300">
+                    Finalizar Día
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal para el Sprint Review -->
+        <div id="review-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex justify-center items-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-xl w-full">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Sprint Review</h2>
+                <p class="text-gray-600 mb-4">¡Felicidades, el sprint ha terminado!</p>
+                <div class="space-y-4 text-left">
+                    <p class="text-lg">Objetivo del Sprint: <span id="review-goal-text" class="font-bold text-gray-700"></span></p>
+                    <p class="text-lg">Puntos de historia comprometidos: <span id="committed-points" class="font-bold text-indigo-600">0</span></p>
+                    <p class="text-lg">Puntos de historia aceptados: <span id="accepted-points" class="font-bold text-green-600">0</span></p>
+                    <p id="review-message" class="text-xl font-bold mt-4"></p>
+                </div>
+                <button id="goToRetrospectiveButton" class="w-full mt-6 bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:bg-blue-700 transition duration-300">
+                    Ir a la Retrospectiva
+                </button>
+            </div>
+        </div>
+        
+        <!-- Modal para la Retrospectiva -->
+        <div id="retrospective-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex justify-center items-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-xl w-full">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Retrospectiva del Sprint</h2>
+                <p class="text-gray-600 mb-4">Piensa en lo que ha pasado en este sprint. ¿Qué salió bien? ¿Qué podemos mejorar?</p>
+                <div class="space-y-4 text-left">
+                    <h3 class="font-bold text-gray-700">Qué salió bien:</h3>
+                    <textarea class="w-full border rounded-lg p-2 resize-none" rows="3" placeholder="Ejemplo: La comunicación fue excelente."></textarea>
+                    <h3 class="font-bold text-gray-700">Qué podemos mejorar:</h3>
+                    <textarea class="w-full border rounded-lg p-2 resize-none" rows="3" placeholder="Ejemplo: Necesitamos definir mejor los requisitos de las historias."></textarea>
+                </div>
+                <button id="nextSprintButton" class="w-full mt-6 bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:bg-blue-700 transition duration-300">
+                    Iniciar Siguiente Sprint
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Definición de las historias de usuario para el Product Backlog
+        const userStories = [
+            { id: 1, title: 'Como usuario, quiero iniciar sesión para acceder a mi perfil.', points: 2, status: 'product-backlog', goal: 'Mejorar la usabilidad' },
+            { id: 2, title: 'Como usuario, quiero ver mi carrito de compras para revisar mis productos.', points: 3, status: 'product-backlog', goal: 'Mejorar la conversión' },
+            { id: 3, title: 'Como usuario, quiero poder agregar un producto al carrito.', points: 2, status: 'product-backlog', goal: 'Mejorar la conversión' },
+            { id: 4, title: 'Como usuario, quiero poder buscar productos por nombre.', points: 5, status: 'product-backlog', goal: 'Mejorar la búsqueda' },
+            { id: 5, title: 'Como usuario, quiero ver los detalles de un producto.', points: 1, status: 'product-backlog', goal: 'Mejorar la conversión' },
+            { id: 6, title: 'Como usuario, quiero poder filtrar productos por categoría.', points: 5, status: 'product-backlog', goal: 'Mejorar la búsqueda' },
+            { id: 7, title: 'Como usuario, quiero ver las opiniones de otros clientes.', points: 3, status: 'product-backlog', goal: 'Mejorar la confianza' },
+            { id: 8, title: 'Como usuario, quiero poder pagar mi compra con tarjeta de crédito.', points: 8, status: 'product-backlog', goal: 'Mejorar la conversión' },
+            { id: 9, title: 'Como usuario, quiero ver mis órdenes pasadas.', points: 3, status: 'product-backlog', goal: 'Mejorar la usabilidad' },
+            { id: 10, title: 'Como usuario, quiero poder resetear mi contraseña.', points: 2, status: 'product-backlog', goal: 'Mejorar la usabilidad' },
+            { id: 11, title: 'Como usuario, quiero poder dejar una opinión sobre un producto.', points: 5, status: 'product-backlog', goal: 'Mejorar la confianza' },
+            { id: 12, title: 'Como usuario, quiero recibir un correo de confirmación de mi compra.', points: 3, status: 'product-backlog', goal: 'Mejorar la usabilidad' },
+            { id: 13, title: 'Como administrador, quiero gestionar los productos en el inventario.', points: 8, status: 'product-backlog', goal: 'Mejorar la administración' },
+            { id: 14, title: 'Como usuario, quiero guardar productos en mi lista de deseos.', points: 5, status: 'product-backlog', goal: 'Mejorar la conversión' },
+            { id: 15, title: 'Como usuario, quiero ver productos relacionados en la página de un producto.', points: 3, status: 'product-backlog', goal: 'Mejorar la conversión' },
+            { id: 16, title: 'Como usuario, quiero recibir un email cuando mi carrito de compra tenga productos.', points: 2, status: 'product-backlog', goal: 'Mejorar la conversión' },
+            { id: 17, title: 'Como usuario, quiero usar un cupón de descuento.', points: 3, status: 'product-backlog', goal: 'Mejorar la conversión' },
+            { id: 18, title: 'Como usuario, quiero crear una cuenta.', points: 2, status: 'product-backlog', goal: 'Mejorar la usabilidad' },
+            { id: 19, title: 'Como usuario, quiero que el sitio web sea responsive.', points: 5, status: 'product-backlog', goal: 'Mejorar la usabilidad' },
+            { id: 20, title: 'Como usuario, quiero que el tiempo de carga del sitio web sea bajo.', points: 8, status: 'product-backlog', goal: 'Mejorar la usabilidad' },
+            { id: 21, title: 'Como usuario, quiero poder descargar un informe de mis compras.', points: 5, status: 'product-backlog', goal: 'Mejorar la administración' },
+            { id: 22, title: 'Como usuario, quiero un chat de soporte.', points: 8, status: 'product-backlog', goal: 'Mejorar la confianza' },
+            { id: 23, title: 'Como usuario, quiero compartir un producto en redes sociales.', points: 3, status: 'product-backlog', goal: 'Mejorar la conversión' },
+        ];
+
+        // Estado del juego
+        let currentSprint = 0;
+        let sprintDay = 0;
+        let sprintGoal = '';
+        let dailyActions = 0;
+        const maxDailyActions = 5;
+        let burndownChart;
+        let burndownData = [];
+        let totalSprintPoints = 0;
+        let velocityHistory = [];
+
+        // Referencias a elementos del DOM
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const sprintNumberDisplay = document.getElementById('sprint-number');
+        const sprintDayDisplay = document.getElementById('sprint-day');
+        const planSprintButton = document.getElementById('planSprintButton');
+        const dailyStandupButton = document.getElementById('dailyStandupButton');
+        const goalModal = document.getElementById('goal-modal');
+        const planModal = document.getElementById('plan-modal');
+        const standupModal = document.getElementById('standup-modal');
+        const reviewModal = document.getElementById('review-modal');
+        const retrospectiveModal = document.getElementById('retrospective-modal');
+        const productBacklogDiv = document.getElementById('product-backlog');
+        const sprintBacklogDiv = document.getElementById('sprint-backlog');
+        const inProgressDiv = document.getElementById('in-progress');
+        const doneDiv = document.getElementById('done');
+        const dailyActionsMessage = document.getElementById('daily-actions-message');
+
+        document.getElementById('startButton').addEventListener('click', () => {
+            startScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            setupBurndownChart();
+            startNewSprint();
+        });
+
+        document.getElementById('planSprintButton').addEventListener('click', () => {
+            renderPlanModal();
+            planModal.classList.remove('hidden');
+        });
+
+        document.getElementById('dailyStandupButton').addEventListener('click', () => {
+            sprintDay++;
+            sprintDayDisplay.textContent = sprintDay;
+            dailyActions = maxDailyActions;
+            document.getElementById('standup-actions-count').textContent = dailyActions;
+            dailyActionsMessage.style.display = 'flex';
+            renderStandupModal();
+            standupModal.classList.remove('hidden');
+        });
+        
+        document.getElementById('goToPlanButton').addEventListener('click', () => {
+            goalModal.classList.add('hidden');
+            renderPlanModal();
+            planModal.classList.remove('hidden');
+        });
+
+        document.getElementById('commitSprintButton').addEventListener('click', () => {
+            planModal.classList.add('hidden');
+            startSprint();
+        });
+        
+        document.getElementById('closeStandupButton').addEventListener('click', () => {
+            standupModal.classList.add('hidden');
+            dailyActionsMessage.style.display = 'none';
+            checkSprintEnd();
+        });
+        
+        document.getElementById('goToRetrospectiveButton').addEventListener('click', () => {
+            reviewModal.classList.add('hidden');
+            retrospectiveModal.classList.remove('hidden');
+        });
+
+        document.getElementById('nextSprintButton').addEventListener('click', () => {
+            retrospectiveModal.classList.add('hidden');
+            startNewSprint();
+        });
+
+        function setupBurndownChart() {
+            const ctx = document.getElementById('burndownChart').getContext('2d');
+            burndownChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Ideal Burndown',
+                            data: [],
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderDash: [5, 5],
+                        },
+                        {
+                            label: 'Burndown Real',
+                            data: [],
+                            borderColor: 'rgb(54, 162, 235)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Puntos de Historia Restantes'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Día del Sprint'
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function updateBurndownChart() {
+            // Se corrige el filtro para encontrar los puntos de las historias comprometidas que están en estado 'done'
+            const completedPoints = userStories.filter(s => s.status === 'done' && committedStories.some(cs => cs.id === s.id)).reduce((sum, story) => sum + story.points, 0);
+            const remainingPoints = totalSprintPoints - completedPoints;
+            burndownData.push(remainingPoints);
+
+            burndownChart.data.labels = Array.from({length: sprintDay}, (_, i) => `Día ${i + 1}`);
+            burndownChart.data.datasets[1].data = burndownData;
+
+            // Actualizar la línea ideal
+            const idealPointsPerDay = totalSprintPoints / 5;
+            burndownChart.data.datasets[0].data = Array.from({length: 6}, (_, i) => Math.max(0, totalSprintPoints - (idealPointsPerDay * i)));
+
+            burndownChart.update();
+        }
+
+        function startNewSprint() {
+            currentSprint++;
+            sprintDay = 0;
+            sprintNumberDisplay.textContent = currentSprint;
+            totalSprintPoints = 0;
+            committedStories = [];
+            burndownData = [];
+
+            // Mueve las historias que no se terminaron en el sprint anterior al Product Backlog
+            userStories.forEach(story => {
+                if (story.status === 'sprint-backlog' || story.status === 'in-progress') {
+                    story.status = 'product-backlog';
+                }
+            });
+
+            renderBoard();
+            updateVelocityDisplay();
+            
+            // Simula al Product Owner definiendo el objetivo
+            setSprintGoal();
+            goalModal.classList.remove('hidden');
+        }
+
+        function setSprintGoal() {
+            const goals = ['Mejorar la usabilidad', 'Mejorar la conversión', 'Mejorar la búsqueda', 'Mejorar la confianza'];
+            sprintGoal = goals[Math.floor(Math.random() * goals.length)];
+            document.getElementById('sprint-goal-text').textContent = sprintGoal;
+        }
+
+        function renderBoard() {
+            productBacklogDiv.innerHTML = '';
+            sprintBacklogDiv.innerHTML = '';
+            inProgressDiv.innerHTML = '';
+            doneDiv.innerHTML = '';
+
+            userStories.forEach(story => {
+                const card = createStoryCard(story);
+                if (story.status === 'product-backlog') {
+                    productBacklogDiv.appendChild(card);
+                } else if (story.status === 'sprint-backlog') {
+                    sprintBacklogDiv.appendChild(card);
+                } else if (story.status === 'in-progress') {
+                    inProgressDiv.appendChild(card);
+                } else if (story.status === 'done') {
+                    doneDiv.appendChild(card);
+                }
+            });
+        }
+
+        function createStoryCard(story, onClick = null) {
+            const card = document.createElement('div');
+            const pointsClass = `story-${story.points}-points`;
+            card.className = `user-story-card bg-white p-3 rounded-lg shadow-sm border border-gray-300 flex justify-between items-center transition duration-200 ${onClick ? 'hover:shadow-md' : ''}`;
+            card.innerHTML = `
+                <p class="text-sm text-gray-700 font-medium">${story.title}</p>
+                <div class="card-points font-bold ${pointsClass}">
+                    ${story.points}
+                </div>
+            `;
+            if (onClick) {
+                card.onclick = onClick;
+            }
+            return card;
+        }
+
+        function renderPlanModal() {
+            const planList = document.getElementById('plan-backlog-list');
+            planList.innerHTML = '';
+            let selectedPoints = 0;
+            const velocity = calculateVelocity();
+            const suggestedPoints = velocity > 0 ? `Tu velocidad promedio es de ${velocity} puntos. Se recomienda comprometer una cantidad similar, enfocándote en el objetivo.` : `Este es tu primer sprint. El objetivo es: "${sprintGoal}". Intenta comprometer hasta 20 puntos de historia.`;
+            document.getElementById('plan-message').textContent = suggestedPoints;
+            
+            const availableStories = userStories.filter(story => story.status === 'product-backlog');
+
+            availableStories.forEach(story => {
+                const card = createStoryCard(story, () => {
+                    const isSelected = committedStories.some(s => s.id === story.id);
+                    if (isSelected) {
+                        card.classList.remove('bg-gray-200');
+                        selectedPoints -= story.points;
+                        committedStories = committedStories.filter(s => s.id !== story.id);
+                    } else {
+                        if (selectedPoints + story.points <= 20) {
+                            card.classList.add('bg-gray-200');
+                            selectedPoints += story.points;
+                            committedStories.push(story);
+                        }
+                    }
+                    document.getElementById('selected-points').textContent = selectedPoints;
+                    document.getElementById('commitSprintButton').disabled = selectedPoints === 0;
+                });
+                planList.appendChild(card);
+            });
+        }
+        
+        function startSprint() {
+            // Mover las historias comprometidas al Sprint Backlog
+            committedStories.forEach(story => {
+                const originalStory = userStories.find(s => s.id === story.id);
+                if (originalStory) {
+                    originalStory.status = 'sprint-backlog';
+                }
+            });
+            totalSprintPoints = committedStories.reduce((sum, story) => sum + story.points, 0);
+            renderBoard();
+            updateBurndownChart();
+            
+            // Iniciar el sprint con el primer stand-up
+            sprintDay++;
+            sprintDayDisplay.textContent = sprintDay;
+            dailyActions = maxDailyActions;
+            document.getElementById('standup-actions-count').textContent = dailyActions;
+            dailyActionsMessage.style.display = 'flex';
+            renderStandupModal();
+            standupModal.classList.remove('hidden');
+        }
+
+        function checkSprintEnd() {
+            if (sprintDay >= 5) { // 5 días en el sprint
+                sprintReview();
+            } else {
+                dailyActions = maxDailyActions;
+                renderStandupModal();
+                standupModal.classList.remove('hidden');
+            }
+            updateBurndownChart();
+        }
+
+        function renderStandupModal() {
+            const standupList = document.getElementById('standup-list-container');
+            standupList.innerHTML = '';
+            
+            const inProgressStories = userStories.filter(story => story.status === 'sprint-backlog' || story.status === 'in-progress');
+            
+            document.getElementById('standup-actions-count').textContent = dailyActions;
+
+            inProgressStories.forEach(story => {
+                const card = createStoryCard(story, () => {
+                    if (dailyActions > 0) {
+                        if (story.status === 'sprint-backlog') {
+                            story.status = 'in-progress';
+                            dailyActions--;
+                        } else if (story.status === 'in-progress') {
+                            story.status = 'done';
+                            dailyActions--;
+                        }
+                        document.getElementById('standup-actions-count').textContent = dailyActions;
+                        renderBoard();
+                        renderStandupModal(); // Vuelve a renderizar para actualizar
+                    }
+                });
+                standupList.appendChild(card);
+            });
+        }
+
+        function sprintReview() {
+            planSprintButton.disabled = true;
+            dailyStandupButton.disabled = true;
+
+            const committedPoints = committedStories.reduce((sum, story) => sum + story.points, 0);
+            let acceptedPoints = 0;
+            let reviewMessage = '';
+            let sprintGoalAchieved = false;
+            
+            // Se corrige el filtro para calcular los puntos aceptados de las historias terminadas del sprint actual
+            const completedStories = userStories.filter(s => s.status === 'done' && committedStories.some(cs => cs.id === s.id));
+            const completedPoints = completedStories.reduce((sum, story) => sum + story.points, 0);
+
+            let acceptedStories = [];
+            // Si la historia completada coincide con el objetivo del sprint, se considera aceptada.
+            acceptedStories = completedStories.filter(story => story.goal === sprintGoal);
+            acceptedPoints = acceptedStories.reduce((sum, story) => sum + story.points, 0);
+            
+            if (acceptedPoints >= committedPoints) {
+                 reviewMessage = `¡Objetivo del Sprint logrado y entregado! Se aceptaron ${acceptedPoints} de los ${committedPoints} puntos.`;
+                document.getElementById('review-message').classList.remove('text-red-600');
+                document.getElementById('review-message').classList.add('text-green-600');
+            } else {
+                 reviewMessage = `El objetivo no se completó completamente. Se aceptaron ${acceptedPoints} de los ${committedPoints} puntos.`;
+                document.getElementById('review-message').classList.remove('text-green-600');
+                document.getElementById('review-message').classList.add('text-red-600');
+            }
+            
+            // Guardar la velocidad del sprint
+            velocityHistory.push(acceptedPoints);
+            
+            document.getElementById('review-goal-text').textContent = sprintGoal;
+            document.getElementById('committed-points').textContent = committedPoints;
+            document.getElementById('accepted-points').textContent = acceptedPoints;
+            document.getElementById('review-message').textContent = reviewMessage;
+            reviewModal.classList.remove('hidden');
+
+            renderBoard();
+        }
+
+        function calculateVelocity() {
+            if (velocityHistory.length === 0) {
+                return 0;
+            }
+            const totalPoints = velocityHistory.reduce((sum, points) => sum + points, 0);
+            return Math.round(totalPoints / velocityHistory.length);
+        }
+
+        function updateVelocityDisplay() {
+            const velocity = calculateVelocity();
+            if (velocity > 0) {
+                document.getElementById('velocity-display').textContent = `${velocity} puntos`;
+            } else {
+                document.getElementById('velocity-display').textContent = '--';
+            }
+        }
+
+        // Iniciar el renderizado inicial del tablero
+        document.addEventListener('DOMContentLoaded', renderBoard);
+    </script>
+</body>
+</html>

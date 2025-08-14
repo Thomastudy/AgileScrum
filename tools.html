@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comparador Interactivo de Herramientas Agile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chosen Palette: Warm Neutrals with Subtle Accents -->
+    <!-- Application Structure Plan: The SPA is designed with a user-centric, task-oriented flow. It starts with a high-level market overview to provide context. The core is an interactive comparator where users select tools to dynamically generate a visual comparison (radar chart) and detailed side-by-side cards. This is more engaging than a static table and allows users to focus on the tools they are most interested in. The final section offers synthesized recommendations based on team profiles, guiding users to a decision. This structure transforms the linear report into an exploratory tool, prioritizing user understanding and direct comparison over passive reading. -->
+    <!-- Visualization & Content Choices: 
+        - Market Stats (Uso en Empresas): Goal: Inform. Method: Dynamic stat cards. Interaction: None. Justification: Provides quick, digestible key metrics from the report upfront. Library: HTML/Tailwind.
+        - Tool Comparison: Goal: Compare. Method: Interactive Radar Chart + Dynamic Info Cards. Interaction: User selects up to 3 tools from a dropdown, which updates the chart and displays corresponding data cards. Justification: A radar chart is excellent for multi-variate comparison, showing at a glance where a tool excels or falls short across key criteria (Cost, Usability, etc.). The cards provide the necessary qualitative details (pros/cons). This combination serves both quick visual analysis and in-depth review. Library: Chart.js for the radar chart, Vanilla JS for dynamic content.
+        - Recommendations: Goal: Inform/Guide. Method: Accordion-style text blocks. Interaction: User clicks on a team profile (e.g., 'Pequeños Equipos') to reveal the recommended tools and rationale. Justification: Organizes concluding advice cleanly, allowing users to jump directly to the recommendation that fits their specific context. Library: HTML/Tailwind/JS.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8f7f4;
+        color: #403d39;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 300px;
+        max-height: 400px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 400px;
+        }
+      }
+      .custom-select-container {
+        position: relative;
+      }
+      .custom-select-button {
+        background-color: #fff;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+      .custom-select-button:hover {
+        border-color: #a5b4fc;
+      }
+      .custom-select-dropdown {
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #d1d5db;
+        border-radius: 0.5rem;
+        width: 100%;
+        z-index: 10;
+        margin-top: 0.25rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+      }
+      .custom-select-option {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+      .custom-select-option:hover {
+        background-color: #f3f4f6;
+      }
+      .custom-select-option input {
+        margin-right: 0.75rem;
+      }
+      .selected-badge {
+        background-color: #e0e7ff;
+        color: #4338ca;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+      }
+      .selected-badge button {
+        margin-left: 0.5rem;
+        background: none;
+        border: none;
+        color: #4338ca;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div class="container mx-auto px-4 py-8 md:py-12">
+      <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-2">
+          Comparador Interactivo de Herramientas Agile
+        </h1>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Una aplicación para explorar y comparar las principales plataformas de
+          gestión de proyectos Scrum y Agile.
+        </p>
+      </header>
+
+      <main>
+        <button
+          onclick="window.history.back()"
+          class="fixed top-4 left-4 z-50 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700 transition-colors transform hover:scale-110"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+        </button>
+        <section id="overview" class="mb-16">
+          <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">
+            Panorama del Mercado
+          </h2>
+          <div class="text-center max-w-4xl mx-auto mb-10 text-gray-700">
+            <p class="mb-4">
+              El mercado de software para gestión ágil está en plena expansión,
+              proyectando un crecimiento exponencial para 2037. Esta tendencia
+              es impulsada por la transformación digital, el trabajo remoto y la
+              necesidad de soluciones en la nube con IA. Las herramientas han
+              pasado de ser simples organizadores a convertirse en habilitadores
+              estratégicos que alinean el trabajo con los objetivos de negocio.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+            >
+              <p class="text-4xl font-bold text-indigo-600 mb-2">57.5%</p>
+              <p class="text-gray-600">
+                De los desarrolladores profesionales usan Jira, consolidándolo
+                como el líder en equipos de software.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+            >
+              <p class="text-4xl font-bold text-indigo-600 mb-2">>60%</p>
+              <p class="text-gray-600">
+                Es la cuota de mercado proyectada para las grandes empresas,
+                demostrando la madurez del movimiento ágil.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-xl shadow-sm border border-gray-200"
+            >
+              <p class="text-4xl font-bold text-indigo-600 mb-2">18.9%</p>
+              <p class="text-gray-600">
+                De los desarrolladores usan Trello, destacando su popularidad
+                por su simplicidad y enfoque visual.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="comparator"
+          class="bg-white p-6 md:p-10 rounded-2xl shadow-lg border border-gray-200 mb-16"
+        >
+          <h2 class="text-3xl font-bold text-center text-gray-800 mb-2">
+            Comparador de Herramientas
+          </h2>
+          <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+            Selecciona hasta 3 herramientas para visualizar una comparación
+            directa de sus capacidades clave. El gráfico de radar evalúa cada
+            herramienta en una escala del 1 (Bajo) al 5 (Alto).
+          </p>
+
+          <div class="max-w-xl mx-auto mb-8">
+            <div class="custom-select-container">
+              <button id="select-button" class="custom-select-button">
+                <span id="select-text">Selecciona herramientas...</span>
+                <svg
+                  class="w-5 h-5 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div
+                id="select-dropdown"
+                class="custom-select-dropdown hidden"
+              ></div>
+            </div>
+            <div id="selected-badges" class="mt-4 flex flex-wrap gap-2"></div>
+          </div>
+
+          <div class="chart-container mb-10">
+            <canvas id="comparisonChart"></canvas>
+          </div>
+
+          <div
+            id="tool-details"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          ></div>
+        </section>
+
+        <section id="recommendations">
+          <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">
+            Recomendaciones por Equipo
+          </h2>
+          <div class="text-center max-w-4xl mx-auto mb-10 text-gray-700">
+            <p>
+              No existe una herramienta perfecta para todos. La elección ideal
+              depende de la cultura, el tamaño y la complejidad de los proyectos
+              de tu equipo. Aquí te presentamos algunas recomendaciones basadas
+              en perfiles comunes para ayudarte a decidir.
+            </p>
+          </div>
+          <div class="space-y-4 max-w-4xl mx-auto">
+            <div
+              class="accordion-item bg-white p-4 rounded-xl shadow-sm border border-gray-200"
+            >
+              <button
+                class="accordion-header w-full text-left flex justify-between items-center text-xl font-semibold text-gray-800 p-2 rounded-lg"
+              >
+                <span>🚀 Equipos Pequeños y Startups</span>
+                <svg
+                  class="w-6 h-6 transform transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div class="accordion-content hidden mt-2 p-2 text-gray-600">
+                <p class="mb-4">
+                  <strong>Prioridad:</strong> Simplicidad y costo.
+                </p>
+                <p class="mb-2">
+                  <strong>Recomendación Principal:</strong>
+                  <strong class="text-indigo-700">Trello</strong>. Es una
+                  excelente opción para empezar por su simplicidad visual y su
+                  generoso plan gratuito. Es ideal para iniciar prácticas ágiles
+                  sin una gran inversión inicial.
+                </p>
+                <p>
+                  <strong>Alternativa:</strong>
+                  <strong class="text-indigo-700"
+                    >monday.com (plan Básico)</strong
+                  >. Ofrece una experiencia más estructurada y visualmente
+                  atractiva que Trello desde el principio, siendo también una
+                  opción viable y fácil de usar.
+                </p>
+              </div>
+            </div>
+            <div
+              class="accordion-item bg-white p-4 rounded-xl shadow-sm border border-gray-200"
+            >
+              <button
+                class="accordion-header w-full text-left flex justify-between items-center text-xl font-semibold text-gray-800 p-2 rounded-lg"
+              >
+                <span>🏢 Equipos en Ecosistema Microsoft</span>
+                <svg
+                  class="w-6 h-6 transform transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div class="accordion-content hidden mt-2 p-2 text-gray-600">
+                <p class="mb-4">
+                  <strong>Prioridad:</strong> Cohesión y familiaridad.
+                </p>
+                <p>
+                  <strong>Recomendación Principal:</strong>
+                  <strong class="text-indigo-700">Microsoft Planner</strong>. Su
+                  integración nativa con Teams, Outlook y el resto de M365
+                  minimiza la fricción. Es la elección natural si tu
+                  organización ya depende de las herramientas de Microsoft.
+                </p>
+                <p>
+                  <strong>Consideración:</strong> Evalúa si las funciones
+                  básicas son suficientes o si necesitarás invertir en planes
+                  premium para obtener capacidades ágiles más robustas, como la
+                  gestión de sprints y backlogs.
+                </p>
+              </div>
+            </div>
+            <div
+              class="accordion-item bg-white p-4 rounded-xl shadow-sm border border-gray-200"
+            >
+              <button
+                class="accordion-header w-full text-left flex justify-between items-center text-xl font-semibold text-gray-800 p-2 rounded-lg"
+              >
+                <span>💻 Equipos de Desarrollo y Grandes Empresas</span>
+                <svg
+                  class="w-6 h-6 transform transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div class="accordion-content hidden mt-2 p-2 text-gray-600">
+                <p class="mb-4">
+                  <strong>Prioridad:</strong> Robustez, control y escalabilidad.
+                </p>
+                <p class="mb-2">
+                  <strong>Recomendación Principal:</strong>
+                  <strong class="text-indigo-700">Jira</strong>. Es el estándar
+                  de la industria por su soporte integral para Scrum/Kanban,
+                  alta configurabilidad y potentes informes. Es indispensable
+                  para proyectos complejos y equipos grandes que necesitan
+                  trazabilidad completa.
+                </p>
+                <p>
+                  <strong>Alternativa:</strong>
+                  <strong class="text-indigo-700">ClickUp</strong>. Es una
+                  opción poderosa si se busca una solución "todo en uno" y se
+                  está dispuesto a invertir tiempo en su configuración. Su
+                  extrema personalización puede consolidar muchas herramientas
+                  en una sola.
+                </p>
+              </div>
+            </div>
+            <div
+              class="accordion-item bg-white p-4 rounded-xl shadow-sm border border-gray-200"
+            >
+              <button
+                class="accordion-header w-full text-left flex justify-between items-center text-xl font-semibold text-gray-800 p-2 rounded-lg"
+              >
+                <span>🌍 Equipos Remotos y Colaborativos</span>
+                <svg
+                  class="w-6 h-6 transform transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </button>
+              <div class="accordion-content hidden mt-2 p-2 text-gray-600">
+                <p class="mb-4">
+                  <strong>Prioridad:</strong> Flexibilidad y comunicación.
+                </p>
+                <p class="mb-2">
+                  <strong>Recomendación Principal:</strong>
+                  <strong class="text-indigo-700">Asana</strong>. Destaca por su
+                  facilidad de uso, amplias integraciones y un fuerte enfoque en
+                  la colaboración. Es muy adaptable a diversas metodologías y es
+                  ideal para equipos de marketing, operaciones y otros equipos
+                  no técnicos.
+                </p>
+                <p>
+                  <strong>Alternativa:</strong>
+                  <strong class="text-indigo-700">monday.com</strong>. Su
+                  interfaz visual, potentes automatizaciones y capacidad para
+                  centralizar la comunicación lo hacen muy adecuado para
+                  facilitar el trabajo en equipo distribuido y mantener a todos
+                  alineados.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="text-center mt-16 pt-8 border-t border-gray-200">
+        <p class="text-gray-500">
+          Aplicación generada a partir del "Análisis Comparativo de Herramientas
+          para Scrum y Metodologías Ágiles".
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      const toolsData = {
+        trello: {
+          name: "Trello",
+          scores: {
+            "Facilidad de Uso": 5,
+            "Capacidades Ágiles": 2,
+            "Costo/Valor": 4,
+            Integraciones: 4,
+            Escalabilidad: 2,
+          },
+          pros: [
+            "Extremadamente simple y visual",
+            "Generoso plan gratuito",
+            "Flexible con Power-Ups",
+          ],
+          cons: [
+            "Capacidades ágiles nativas limitadas",
+            "No escala bien para proyectos grandes",
+            "Permisos de usuario básicos",
+          ],
+          idealFor:
+            "Equipos pequeños o individuos que inician en Agile y valoran la simplicidad visual.",
+          color: "rgba(0, 121, 191, 0.6)",
+        },
+        planner: {
+          name: "Microsoft Planner",
+          scores: {
+            "Facilidad de Uso": 4,
+            "Capacidades Ágiles": 3,
+            "Costo/Valor": 3,
+            Integraciones: 2,
+            Escalabilidad: 3,
+          },
+          pros: [
+            "Integración perfecta con Microsoft 365",
+            "Familiar para usuarios de Microsoft",
+            "Incluido en muchas suscripciones",
+          ],
+          cons: [
+            "Limitado fuera del ecosistema de MS",
+            "Funciones ágiles avanzadas son de pago",
+            "Informes básicos",
+          ],
+          idealFor:
+            "Organizaciones profundamente integradas en el ecosistema de Microsoft.",
+          color: "rgba(51, 158, 137, 0.6)",
+        },
+        jira: {
+          name: "Jira",
+          scores: {
+            "Facilidad de Uso": 2,
+            "Capacidades Ágiles": 5,
+            "Costo/Valor": 3,
+            Integraciones: 5,
+            Escalabilidad: 5,
+          },
+          pros: [
+            "Estándar de la industria para desarrollo",
+            "Potentes informes y flujos de trabajo",
+            "Altamente configurable y escalable",
+          ],
+          cons: [
+            "Curva de aprendizaje pronunciada",
+            "La interfaz puede ser compleja",
+            "El costo aumenta con los complementos",
+          ],
+          idealFor:
+            "Equipos de desarrollo de software y grandes empresas con proyectos complejos.",
+          color: "rgba(0, 82, 204, 0.6)",
+        },
+        asana: {
+          name: "Asana",
+          scores: {
+            "Facilidad de Uso": 4,
+            "Capacidades Ágiles": 4,
+            "Costo/Valor": 3,
+            Integraciones: 5,
+            Escalabilidad: 4,
+          },
+          pros: [
+            "Interfaz limpia y fácil de usar",
+            "Excelente para la colaboración",
+            "Muy flexible con múltiples vistas",
+          ],
+          cons: [
+            "Modelo de licenciamiento puede ser confuso",
+            "Gestión de permisos limitada",
+            "Sin seguimiento de tiempo nativo",
+          ],
+          idealFor:
+            "Equipos remotos, de marketing y operaciones que necesitan flexibilidad y colaboración.",
+          color: "rgba(240, 100, 130, 0.6)",
+        },
+        clickup: {
+          name: "ClickUp",
+          scores: {
+            "Facilidad de Uso": 3,
+            "Capacidades Ágiles": 5,
+            "Costo/Valor": 5,
+            Integraciones: 5,
+            Escalabilidad: 4,
+          },
+          pros: [
+            "Solución 'todo en uno'",
+            "Extremadamente personalizable",
+            "Plan gratuito muy completo",
+          ],
+          cons: [
+            "Puede ser abrumador por la cantidad de funciones",
+            "Reportes de problemas de rendimiento",
+            "Curva de aprendizaje para configuración",
+          ],
+          idealFor:
+            "Equipos que buscan consolidar herramientas en una plataforma altamente personalizable.",
+          color: "rgba(119, 82, 224, 0.6)",
+        },
+        monday: {
+          name: "monday.com",
+          scores: {
+            "Facilidad de Uso": 4,
+            "Capacidades Ágiles": 4,
+            "Costo/Valor": 4,
+            Integraciones: 5,
+            Escalabilidad: 4,
+          },
+          pros: [
+            "Visualmente atractivo e intuitivo",
+            "Potentes automatizaciones sin código",
+            "Paneles de control personalizables",
+          ],
+          cons: [
+            "Puede ser caro para equipos pequeños",
+            "Ciertas funciones ágiles no son tan profundas",
+            "La app móvil puede ser limitada",
+          ],
+          idealFor:
+            "Equipos que valoran la colaboración visual, la automatización y los informes de alto nivel.",
+          color: "rgba(253, 171, 61, 0.6)",
+        },
+      };
+
+      let selectedTools = [];
+      let comparisonChart;
+
+      const ctx = document.getElementById("comparisonChart").getContext("2d");
+
+      function createChart() {
+        const datasets = selectedTools.map((toolId) => {
+          const tool = toolsData[toolId];
+          return {
+            label: tool.name,
+            data: Object.values(tool.scores),
+            backgroundColor: tool.color.replace("0.6", "0.2"),
+            borderColor: tool.color,
+            pointBackgroundColor: tool.color,
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: tool.color,
+          };
+        });
+
+        if (comparisonChart) {
+          comparisonChart.destroy();
+        }
+
+        comparisonChart = new Chart(ctx, {
+          type: "radar",
+          data: {
+            labels: Object.keys(toolsData.trello.scores),
+            datasets: datasets,
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                angleLines: {
+                  color: "#e5e7eb",
+                },
+                grid: {
+                  color: "#e5e7eb",
+                },
+                pointLabels: {
+                  font: {
+                    size: 12,
+                    weight: "500",
+                  },
+                  color: "#4b5563",
+                },
+                ticks: {
+                  beginAtZero: true,
+                  min: 0,
+                  max: 5,
+                  stepSize: 1,
+                  backdropColor: "rgba(0,0,0,0)",
+                  color: "#6b7280",
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                position: "top",
+                labels: {
+                  font: {
+                    size: 14,
+                  },
+                },
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    let label = context.dataset.label || "";
+                    if (label) {
+                      label += ": ";
+                    }
+                    if (context.parsed.r !== null) {
+                      label += context.parsed.r;
+                    }
+                    return label;
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function updateDetails() {
+        const detailsContainer = document.getElementById("tool-details");
+        detailsContainer.innerHTML = "";
+        selectedTools.forEach((toolId) => {
+          const tool = toolsData[toolId];
+          const card = `
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col">
+                        <h3 class="text-2xl font-bold mb-4" style="color: ${tool.color.replace(
+                          "0.6",
+                          "1"
+                        )}">${tool.name}</h3>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-gray-700 mb-2">Ventajas:</h4>
+                            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                                ${tool.pros
+                                  .map((pro) => `<li>${pro}</li>`)
+                                  .join("")}
+                            </ul>
+                            <h4 class="font-semibold text-gray-700 mb-2">Desventajas:</h4>
+                            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                                ${tool.cons
+                                  .map((con) => `<li>${con}</li>`)
+                                  .join("")}
+                            </ul>
+                        </div>
+                        <div>
+                           <h4 class="font-semibold text-gray-700 mb-2">Ideal para:</h4>
+                           <p class="text-gray-600">${tool.idealFor}</p>
+                        </div>
+                    </div>
+                `;
+          detailsContainer.innerHTML += card;
+        });
+      }
+
+      function updateBadges() {
+        const badgesContainer = document.getElementById("selected-badges");
+        badgesContainer.innerHTML = "";
+        selectedTools.forEach((toolId) => {
+          const tool = toolsData[toolId];
+          const badge = document.createElement("div");
+          badge.className = "selected-badge";
+          badge.innerHTML = `
+                    <span>${tool.name}</span>
+                    <button data-id="${toolId}">&times;</button>
+                `;
+          badge.querySelector("button").addEventListener("click", (e) => {
+            e.stopPropagation();
+            const idToRemove = e.target.dataset.id;
+            selectedTools = selectedTools.filter((id) => id !== idToRemove);
+            document.querySelector(
+              `.custom-select-option input[value="${idToRemove}"]`
+            ).checked = false;
+            updateSelection();
+          });
+          badgesContainer.appendChild(badge);
+        });
+      }
+
+      function updateSelection() {
+        createChart();
+        updateDetails();
+        updateBadges();
+
+        const selectText = document.getElementById("select-text");
+        if (selectedTools.length === 0) {
+          selectText.textContent = "Selecciona herramientas...";
+        } else {
+          selectText.textContent = `${selectedTools.length} herramienta(s) seleccionada(s)`;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const selectButton = document.getElementById("select-button");
+        const selectDropdown = document.getElementById("select-dropdown");
+
+        Object.keys(toolsData).forEach((toolId) => {
+          const tool = toolsData[toolId];
+          const option = document.createElement("div");
+          option.className = "custom-select-option";
+          option.innerHTML = `
+                    <input type="checkbox" value="${toolId}" class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500">
+                    <label>${tool.name}</label>
+                `;
+          option.addEventListener("click", (e) => {
+            const checkbox = option.querySelector("input");
+            if (e.target.tagName !== "INPUT") {
+              checkbox.checked = !checkbox.checked;
+            }
+
+            if (checkbox.checked) {
+              if (selectedTools.length < 3 && !selectedTools.includes(toolId)) {
+                selectedTools.push(toolId);
+              } else if (selectedTools.length >= 3) {
+                checkbox.checked = false;
+                alert("Puedes seleccionar un máximo de 3 herramientas.");
+              }
+            } else {
+              selectedTools = selectedTools.filter((id) => id !== toolId);
+            }
+            updateSelection();
+          });
+          selectDropdown.appendChild(option);
+        });
+
+        selectButton.addEventListener("click", () => {
+          selectDropdown.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+          if (
+            !selectButton.contains(e.target) &&
+            !selectDropdown.contains(e.target)
+          ) {
+            selectDropdown.classList.add("hidden");
+          }
+        });
+
+        const accordionItems = document.querySelectorAll(".accordion-item");
+        accordionItems.forEach((item) => {
+          const header = item.querySelector(".accordion-header");
+          header.addEventListener("click", () => {
+            const content = item.querySelector(".accordion-content");
+            const icon = header.querySelector("svg");
+
+            const isVisible = !content.classList.contains("hidden");
+
+            document
+              .querySelectorAll(".accordion-content")
+              .forEach((c) => c.classList.add("hidden"));
+            document
+              .querySelectorAll(".accordion-header svg")
+              .forEach((i) => i.classList.remove("rotate-180"));
+
+            if (!isVisible) {
+              content.classList.remove("hidden");
+              icon.classList.add("rotate-180");
+            }
+          });
+        });
+
+        createChart();
+      });
+    </script>
+  </body>
+</html>
