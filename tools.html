@@ -467,6 +467,7 @@
           idealFor:
             "Organizaciones profundamente integradas en el ecosistema de Microsoft.",
           color: "rgba(51, 158, 137, 0.6)",
+          button: `https://youtu.be/r3dpzqttDuA?si=MMvBPbDNMFpQ-Jwd`,
         },
         jira: {
           name: "Jira",
@@ -490,6 +491,7 @@
           idealFor:
             "Equipos de desarrollo de software y grandes empresas con proyectos complejos.",
           color: "rgba(0, 82, 204, 0.6)",
+          button: `https://youtu.be/NDVSMlVYxm8?si=PZ5FvsuG1LVOgY3Y`,
         },
         asana: {
           name: "Asana",
@@ -672,11 +674,29 @@
                                   .map((con) => `<li>${con}</li>`)
                                   .join("")}
                             </ul>
+                            <div>
+                               <h4 class="font-semibold text-gray-700 mb-2">Ideal para:</h4>
+                               <p class="text-gray-600">${tool.idealFor}</p>
+                            </div>
                         </div>
-                        <div>
-                           <h4 class="font-semibold text-gray-700 mb-2">Ideal para:</h4>
-                           <p class="text-gray-600">${tool.idealFor}</p>
-                        </div>
+                        ${
+                          tool.button
+                            ? `
+                            <section id="navigation-buttons" class="mb-2 mt-5">
+                              <div
+                                class="flex flex-col md:flex-row items-center justify-center "
+                              >
+                              <a
+                              href=${tool.button} target="_blank"
+                              class="inline-block bg-blue-500 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:bg-blue-600 transition-colors transform hover:scale-105"
+                              >
+                              ¿Cómo usar?
+                              </a>
+                              </div>
+                              </section>
+                              `
+                            : ""
+                        }
                     </div>
                 `;
           detailsContainer.innerHTML += card;
