@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infografía Guía Scrum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6;
+        color: #1f2937;
+        overflow-x: hidden;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+      }
+      .card {
+        background-color: #ffffff;
+        border-radius: 1rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease-in-out;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      .section-header {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #4b5563;
+        margin-bottom: 2rem;
+        border-bottom: 3px solid #6366f1;
+        padding-bottom: 0.5rem;
+      }
+      .tooltip {
+        visibility: hidden;
+        background-color: #1f2937;
+        color: #ffffff;
+        text-align: center;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        position: absolute;
+        z-index: 10;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        white-space: nowrap;
+      }
+      .item-box:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+      .tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #1f2937 transparent transparent transparent;
+      }
+      .highlight {
+        font-weight: 600;
+        color: #6366f1;
+      }
+
+      /* Styles for the interactive flowchart */
+      .flowchart-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      .flowchart-item {
+        cursor: pointer;
+        padding: 1rem;
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        border: 2px solid #e5e7eb;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        width: 150px;
+      }
+
+      .flowchart-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        border-color: #6366f1;
+      }
+      .arrow {
+        color: #4b5563;
+        font-size: 2rem;
+        margin: 0 1rem;
+      }
+      .flowchart-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+
+      /* Mobile specific styles for the flowchart */
+      @media (max-width: 768px) {
+        .flowchart-box {
+          flex-direction: column;
+          align-items: center;
+        }
+        .arrow {
+          transform: rotate(90deg);
+          margin: 1rem 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-800">
+    <button
+      onclick="window.history.back()"
+      class="fixed top-4 left-4 z-50 bg-gray-800 text-white p-2 rounded-full shadow-lg hover:bg-gray-700 transition-colors transform hover:scale-110"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+        />
+      </svg>
+    </button>
+
+    <div class="container py-8">
+      <header class="text-center mb-8">
+        <h1
+          class="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight mb-2"
+        >
+          Guía Scrum 2020
+        </h1>
+        <p class="text-xl text-gray-600">
+          Explora los conceptos clave de Scrum de forma interactiva.
+        </p>
+      </header>
+
+      <!-- Sección de Scrum en pocas palabras -->
+      <section class="mb-12">
+        <h2 class="section-header text-center">Scrum en pocas palabras</h2>
+        <div class="card p-6 md:p-10 text-center">
+          <p class="text-lg md:text-xl leading-relaxed">
+            Scrum es un marco de trabajo ligero que ayuda a personas, equipos y
+            organizaciones a generar valor a través de
+            <span class="highlight">soluciones adaptativas</span> para problemas
+            complejos. Se basa en la
+            <span class="highlight">inteligencia colectiva</span> de quienes lo
+            utilizan.
+          </p>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <div
+          class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+        >
+          <h3 class="font-bold text-xl mt-4 mb-2">Guía oficial Scrum</h3>
+          <a
+            target="_blank"
+            href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf#zoom=100"
+          >
+            <img
+              src="https://scrumorg-website-prod.s3.amazonaws.com/drupal/inline-images/2020-11/2020-scrum-guide-cover_0.png"
+              class="h-40"
+              alt=""
+            />
+          </a>
+          <br />
+          <p class="text-sm text-gray-700 text-center">
+            <b>
+              The Scrum Guide The Definitive Guide to Scrum: The Rules of the
+              Game </b
+            ><br />
+            La Guía Scrum se mantiene independientemente de cualquier empresa o
+            proveedor y, por lo tanto, se encuentra en un sitio neutral en
+            cuanto a la marca.
+          </p>
+          <a
+            target="_blank"
+            href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf#zoom=100"
+            >Acceder a la Guía
+          </a>
+        </div>
+      </section>
+
+      <!-- Sección de Diagrama de Flujo Interactivo -->
+      <section class="mb-12">
+        <h2 class="section-header text-center">El flujo de Scrum</h2>
+        <div class="card p-6 md:p-10">
+          <div class="flowchart-container">
+            <div class="flowchart-box">
+              <div data-target="artefactos" class="flowchart-item">
+                <h4 class="font-bold">Artefactos</h4>
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="eventos" class="flowchart-item">
+                <h4 class="font-bold">Eventos</h4>
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="scrum-team" class="flowchart-item">
+                <h4 class="font-bold">Scrum Team</h4>
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="pilares" class="flowchart-item">
+                <h4 class="font-bold">Pilares & Valores</h4>
+              </div>
+            </div>
+          </div>
+          <p class="text-center text-sm text-gray-500 mt-4">
+            Haz clic en cada elemento para saltar a su sección.
+          </p>
+        </div>
+      </section>
+
+      <!-- Sección de Pilares y Valores -->
+      <section class="mb-12" id="pilares">
+        <h2 class="section-header text-center">Pilares y Valores de Scrum</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Pilares -->
+          <div class="card p-6">
+            <h3 class="text-2xl font-bold mb-4 text-center">
+              Pilares Empíricos
+            </h3>
+            <div class="space-y-4 text-lg">
+              <div
+                class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+              >
+                <h4 class="font-semibold text-xl text-indigo-600">
+                  Transparencia
+                </h4>
+                <p class="text-sm text-gray-600">
+                  El proceso y el trabajo emergentes deben ser visibles para
+                  quienes lo realizan y quienes lo reciben.
+                </p>
+                <span class="tooltip"
+                  >Las decisiones se basan en el estado percibido de los
+                  artefactos.</span
+                >
+              </div>
+              <div
+                class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+              >
+                <h4 class="font-semibold text-xl text-indigo-600">
+                  Inspección
+                </h4>
+                <p class="text-sm text-gray-600">
+                  Los artefactos y el progreso se inspeccionan con frecuencia
+                  para detectar problemas o desviaciones.
+                </p>
+                <span class="tooltip"
+                  >Sin transparencia, la inspección es engañosa y
+                  derrochadora.</span
+                >
+              </div>
+              <div
+                class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+              >
+                <h4 class="font-semibold text-xl text-indigo-600">
+                  Adaptación
+                </h4>
+                <p class="text-sm text-gray-600">
+                  Si algo se desvía, el proceso o los materiales deben ajustarse
+                  lo antes posible.
+                </p>
+                <span class="tooltip"
+                  >Se espera que el equipo se adapte tan pronto como aprenda
+                  algo nuevo.</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- Valores -->
+          <div class="card p-6">
+            <h3 class="text-2xl font-bold mb-4 text-center">
+              Valores de Scrum
+            </h3>
+            <div class="space-y-4 text-lg">
+              <div
+                class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+              >
+                <h4 class="font-semibold text-xl text-indigo-600">
+                  Compromiso
+                </h4>
+                <p class="text-sm text-gray-600">
+                  Lograr los objetivos y apoyarse mutuamente.
+                </p>
+                <span class="tooltip"
+                  >El equipo se compromete a lograr sus metas.</span
+                >
+              </div>
+              <div
+                class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+              >
+                <h4 class="font-semibold text-xl text-indigo-600">Foco</h4>
+                <p class="text-sm text-gray-600">
+                  Concentrarse en el trabajo del Sprint para lograr el mejor
+                  progreso posible.
+                </p>
+                <span class="tooltip"
+                  >Concentrarse en el trabajo del Sprint.</span
+                >
+              </div>
+              <div
+                class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+              >
+                <h4 class="font-semibold text-xl text-indigo-600">Franqueza</h4>
+                <p class="text-sm text-gray-600">
+                  Ser abiertos sobre el trabajo y los desafíos.
+                </p>
+                <span class="tooltip"
+                  >Hablar abiertamente de problemas y desafíos.</span
+                >
+              </div>
+              <div
+                class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+              >
+                <h4 class="font-semibold text-xl text-indigo-600">Respeto</h4>
+                <p class="text-sm text-gray-600">
+                  Respetarse mutuamente como personas capaces e independientes.
+                </p>
+                <span class="tooltip">Respeto mutuo entre los miembros.</span>
+              </div>
+              <div
+                class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+              >
+                <h4 class="font-semibold text-xl text-indigo-600">Coraje</h4>
+                <p class="text-sm text-gray-600">
+                  Tener el coraje de hacer lo correcto y trabajar en problemas
+                  difíciles.
+                </p>
+                <span class="tooltip"
+                  >Hacer lo correcto y enfrentar problemas difíciles.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de Artefactos y sus Compromisos -->
+      <section class="mb-12" id="artefactos">
+        <h2 class="section-header text-center">Artefactos y Compromisos</h2>
+        <div class="card p-6 md:p-10 grid md:grid-cols-3 gap-6">
+          <!-- Product Backlog -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-center mb-2 text-emerald-600">
+              Product Backlog
+            </h3>
+            <p class="text-sm text-gray-600 text-center">
+              Una lista emergente y ordenada de lo que se necesita para mejorar
+              el producto.
+            </p>
+            <h4 class="font-bold mt-2 text-center text-emerald-700">
+              Compromiso: Objetivo del Producto
+            </h4>
+            <span class="tooltip">Describe un estado futuro del producto.</span>
+          </div>
+          <!-- Sprint Backlog -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-center mb-2 text-emerald-600">
+              Sprint Backlog
+            </h3>
+            <p class="text-sm text-gray-600 text-center">
+              El plan hecho por los Developers para lograr el Objetivo del
+              Sprint.
+            </p>
+            <h4 class="font-bold mt-2 text-center text-emerald-700">
+              Compromiso: Objetivo del Sprint
+            </h4>
+            <span class="tooltip">El único propósito del Sprint.</span>
+          </div>
+          <!-- Increment -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-center mb-2 text-emerald-600">
+              Increment
+            </h3>
+            <p class="text-sm text-gray-600 text-center">
+              Un peldaño concreto hacia el Objetivo del Producto. Debe ser
+              utilizable.
+            </p>
+            <h4 class="font-bold mt-2 text-center text-emerald-700">
+              Compromiso: Definición de Terminado
+            </h4>
+            <span class="tooltip"
+              >Una descripción formal del estado del Incremento.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de Definición de Terminado -->
+      <section class="mb-12" id="definicion-de-terminado">
+        <h2 class="section-header text-center">Definición de Terminado</h2>
+        <div class="card p-6 md:p-10">
+          <p class="text-lg md:text-xl leading-relaxed text-center mb-4">
+            La <span class="highlight">Definición de Terminado</span> es una
+            descripción formal del estado del Incremento cuando cumple con las
+            medidas de calidad requeridas para el producto.
+          </p>
+          <ul
+            class="list-disc list-inside space-y-2 text-gray-700 text-sm md:text-base mx-auto w-11/12 md:w-3/4"
+          >
+            <li>
+              Crea transparencia y un entendimiento compartido de lo que se ha
+              completado.
+            </li>
+            <li>
+              Un elemento del `Product Backlog` no puede ser parte de un
+              `Increment` a menos que cumpla con esta definición.
+            </li>
+            <li>
+              Si varios Scrum Teams trabajan en el mismo producto, deben tener y
+              cumplir la misma Definición de Terminado.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Sección de Refinamiento del Product Backlog -->
+      <section class="mb-12" id="refinamiento-product-backlog">
+        <h2 class="section-header text-center">
+          Refinamiento del Product Backlog
+        </h2>
+        <div class="card p-6 md:p-10">
+          <p class="text-lg md:text-xl leading-relaxed text-center mb-4">
+            El refinamiento es una
+            <span class="highlight">actividad continua</span> para dividir y
+            definir elementos del `Product Backlog` en partes más pequeñas y
+            precisas, añadiendo detalles.
+          </p>
+          <ul
+            class="list-disc list-inside space-y-2 text-gray-700 text-sm md:text-base mx-auto w-11/12 md:w-3/4"
+          >
+            <li>
+              Los elementos que están listos para ser seleccionados en la
+              `Sprint Planning` se consideran refinados.
+            </li>
+            <li>
+              Los Developers son responsables de estimar el tamaño de los
+              elementos del `Product Backlog`.
+            </li>
+            <li>
+              Es un proceso de colaboración, no un evento formal de Scrum.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Sección del Scrum Team y sus roles -->
+      <section class="mb-12" id="scrum-team">
+        <h2 class="section-header text-center">El Scrum Team</h2>
+        <div class="card p-6 md:p-10 grid md:grid-cols-3 gap-6">
+          <!-- Scrum Master -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-center mb-2 text-rose-500">
+              Scrum Master
+            </h3>
+            <p class="text-sm text-gray-600 text-center">
+              Responsable de establecer Scrum. Ayuda al equipo y a la
+              organización a entender y aplicar Scrum. Es un verdadero líder al
+              servicio.
+            </p>
+            <span class="tooltip"
+              >Remueve impedimentos y asegura la efectividad del equipo.</span
+            >
+          </div>
+          <!-- Product Owner -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-center mb-2 text-rose-500">
+              Product Owner
+            </h3>
+            <p class="text-sm text-gray-600 text-center">
+              Responsable de maximizar el valor del producto. Gestiona el
+              Product Backlog y define el Objetivo del Producto.
+            </p>
+            <span class="tooltip">Una sola persona, no un comité.</span>
+          </div>
+          <!-- Developers -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-center mb-2 text-rose-500">
+              Developers
+            </h3>
+            <p class="text-sm text-gray-600 text-center">
+              Las personas que se comprometen a crear un Incremento utilizable
+              en cada Sprint. Son responsables de crear el plan del Sprint.
+            </p>
+            <span class="tooltip">Son multifuncionales y autogestionados.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de Servicios del Scrum Master -->
+      <section class="mb-12" id="scrum-master-in-action">
+        <h2 class="section-header text-center">El Scrum Master en acción</h2>
+        <div class="card p-6 md:p-10">
+          <div class="grid md:grid-cols-3 gap-8">
+            <!-- Servicio al Scrum Team -->
+            <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+              <h3 class="text-xl font-bold text-blue-800 mb-4">
+                Sirve al Scrum Team
+              </h3>
+              <ul class="list-disc list-inside space-y-2 text-gray-700 text-sm">
+                <li>
+                  Guía a los miembros del equipo en ser autogestionados y
+                  multifuncionales.
+                </li>
+                <li>
+                  Ayuda al equipo a enfocarse en crear Increments de alto valor.
+                </li>
+                <li>
+                  Procura la eliminación de impedimentos para el progreso del
+                  equipo.
+                </li>
+                <li>
+                  Se asegura de que todos los eventos de Scrum se lleven a cabo
+                  y sean productivos.
+                </li>
+              </ul>
+            </div>
+            <!-- Servicio al Product Owner -->
+            <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+              <h3 class="text-xl font-bold text-green-800 mb-4">
+                Sirve al Product Owner
+              </h3>
+              <ul class="list-disc list-inside space-y-2 text-gray-700 text-sm">
+                <li>
+                  Ayuda a encontrar técnicas para una gestión efectiva del
+                  Product Backlog.
+                </li>
+                <li>
+                  Ayuda al Scrum Team a comprender la necesidad de tener
+                  elementos del Product Backlog claros y concisos.
+                </li>
+                <li>
+                  Ayuda a establecer una planificación empírica de productos.
+                </li>
+                <li>Facilita la colaboración de los interesados.</li>
+              </ul>
+            </div>
+            <!-- Servicio a la Organización -->
+            <div class="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
+              <h3 class="text-xl font-bold text-yellow-800 mb-4">
+                Sirve a la Organización
+              </h3>
+              <ul class="list-disc list-inside space-y-2 text-gray-700 text-sm">
+                <li>Lidera, capacita y guía en la adopción de Scrum.</li>
+                <li>Planifica y asesora las implementaciones de Scrum.</li>
+                <li>
+                  Ayuda a los empleados y interesados a aplicar un enfoque
+                  empírico.
+                </li>
+                <li>
+                  Elimina las barreras entre los interesados y los Scrum Teams.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de Eventos de Scrum -->
+      <section class="mb-12" id="eventos">
+        <h2 class="section-header text-center">Eventos de Scrum</h2>
+        <div class="card p-6 md:p-10 space-y-8">
+          <!-- Sprint -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-purple-600">Sprint</h3>
+            <p class="text-sm text-gray-600">
+              El corazón de Scrum. Un evento contenedor de duración fija (un mes
+              o menos) donde las ideas se convierten en valor.
+            </p>
+            <span class="tooltip"
+              >Un nuevo Sprint comienza inmediatamente después del
+              anterior.</span
+            >
+          </div>
+          <!-- Sprint Planning -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-purple-600">Sprint Planning</h3>
+            <p class="text-sm text-gray-600">
+              El Scrum Team crea el plan para el Sprint. Se responde: ¿Por qué?,
+              ¿Qué? y ¿Cómo? se hará el trabajo.
+            </p>
+            <span class="tooltip"
+              >Máximo 8 horas para un Sprint de un mes.</span
+            >
+          </div>
+          <!-- Daily Scrum -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-purple-600">Daily Scrum</h3>
+            <p class="text-sm text-gray-600">
+              Un evento de 15 minutos para los Developers. Inspeccionan el
+              progreso hacia el Objetivo del Sprint y ajustan el plan.
+            </p>
+            <span class="tooltip"
+              >Mejora la comunicación y elimina la necesidad de otras
+              reuniones.</span
+            >
+          </div>
+          <!-- Sprint Review -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-purple-600">Sprint Review</h3>
+            <p class="text-sm text-gray-600">
+              El Scrum Team presenta los resultados del Sprint a los interesados
+              clave para inspeccionar el Incremento y adaptar el Product
+              Backlog.
+            </p>
+            <span class="tooltip"
+              >Máximo 4 horas para un Sprint de un mes.</span
+            >
+          </div>
+          <!-- Sprint Retrospective -->
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-purple-600">
+              Sprint Retrospective
+            </h3>
+            <p class="text-sm text-gray-600">
+              El Scrum Team inspecciona cómo fue el Sprint y planea formas de
+              aumentar la calidad y efectividad.
+            </p>
+            <span class="tooltip"
+              >Máximo 3 horas para un Sprint de un mes.</span
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de Cancelación del Sprint -->
+      <section class="mb-12" id="cancelacion-sprint">
+        <h2 class="section-header text-center">Cancelación del Sprint</h2>
+        <div class="card p-6 md:p-10">
+          <p class="text-lg md:text-xl leading-relaxed text-center mb-4">
+            Un `Sprint` podría cancelarse si el Objetivo del Sprint se vuelve
+            obsoleto.
+          </p>
+          <ul
+            class="list-disc list-inside space-y-2 text-gray-700 text-sm md:text-base mx-auto w-11/12 md:w-3/4"
+          >
+            <li>
+              Solo el <span class="highlight">Product Owner</span> tiene la
+              autoridad para cancelar un Sprint.
+            </li>
+            <li>
+              Un Sprint se cancela si el `Sprint Goal` deja de tener sentido.
+            </li>
+            <li>
+              Todo el trabajo del `Sprint Backlog` que se ha completado se
+              revisa.
+            </li>
+            <li>
+              Los elementos que no están Terminados regresan al `Product
+              Backlog` para ser revaluados.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Sección de Cambios de la Guía 2017 a la 2020 -->
+      <section class="mb-12">
+        <h2 class="section-header text-center">Cambios clave 2017 a 2020</h2>
+        <div class="card p-6 md:p-10 space-y-8">
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-gray-800">Menos prescriptiva</h3>
+            <p class="text-sm text-gray-600">
+              La versión 2020 se enfoca en que Scrum sea un marco de trabajo
+              "mínimamente suficiente", eliminando lenguaje prescriptivo.
+            </p>
+          </div>
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-gray-800">
+              Un solo equipo, enfocado en un producto
+            </h3>
+            <p class="text-sm text-gray-600">
+              Se elimina el concepto de "Equipo de Desarrollo" separado. Ahora
+              existe un único "Scrum Team" con tres conjuntos de
+              responsabilidades: Product Owner, Scrum Master y Developers.
+            </p>
+          </div>
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-gray-800">
+              Introducción del Objetivo del Producto
+            </h3>
+            <p class="text-sm text-gray-600">
+              Un nuevo concepto que proporciona un objetivo a largo plazo para
+              el Scrum Team. Cada Sprint se enfoca en acercar el producto a este
+              objetivo general.
+            </p>
+          </div>
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-gray-800">
+              Compromisos de los artefactos
+            </h3>
+            <p class="text-sm text-gray-600">
+              Se introducen los "compromisos" para los artefactos: el Objetivo
+              del Producto para el Product Backlog, el Objetivo del Sprint para
+              el Sprint Backlog y la Definición de Terminado para el Incremento.
+              Esto mejora la transparencia.
+            </p>
+          </div>
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-gray-800">
+              Autogestión sobre autoorganización
+            </h3>
+            <p class="text-sm text-gray-600">
+              Se enfatiza que el Scrum Team es autogestionado, lo que significa
+              que eligen no solo "cómo" hacer el trabajo, sino también "quién" y
+              "en qué" trabajar.
+            </p>
+          </div>
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-gray-800">
+              Tres temas en la Sprint Planning
+            </h3>
+            <p class="text-sm text-gray-600">
+              La versión 2020 agrega un tercer tema a la Sprint Planning: "Por
+              qué" el Sprint es valioso, además del "Qué" y el "Cómo".
+            </p>
+          </div>
+          <div
+            class="item-box relative p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100"
+          >
+            <h3 class="text-xl font-bold text-gray-800">
+              Simplificación de lenguaje
+            </h3>
+            <p class="text-sm text-gray-600">
+              Se eliminaron términos redundantes y referencias específicas al
+              trabajo de TI (ej. "pruebas", "sistema", etc.) para hacer la guía
+              más accesible a una audiencia más amplia.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="section-header text-center">Certificaciones</h2>
+        <div class="card p-6 md:p-10 space-y-8 text-center">
+            <p>Aquí te presentamos un resumen de las certificaciones ágiles más relevantes.</p>
+            <a
+                href="certifications.html"
+                class="inline-block bg-teal-500  text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-teal-600 transition-colors transform hover:scale-105"
+            >
+                Explora certificaciones Scrum
+            </a>
+        </div>
+      </section>
+
+      <footer class="text-center text-gray-500 text-sm mt-8">
+        <p>Basado en la Guía Scrum 2020 de Ken Schwaber y Jeff Sutherland.</p>
+        <p>Creado para entender los conceptos de forma visual e interactiva.</p>
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const flowchartItems = document.querySelectorAll(".flowchart-item");
+        flowchartItems.forEach((item) => {
+          item.addEventListener("click", () => {
+            const sectionId = item.getAttribute("data-target");
+            const section = document.getElementById(sectionId);
+            if (section) {
+              section.scrollIntoView({ behavior: "smooth" });
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

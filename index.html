@@ -94,13 +94,30 @@
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
           0 1px 2px 0 rgba(0, 0, 0, 0.06);
       }
+
+
+      .methodology-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+      }
+      .manifesto-card {
+        background-color: #f7fafc;
+        border-left: 4px solid #63b3ed;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      }
     </style>
   </head>
   <body class="text-gray-800">
     <div class="container mx-auto p-4 md:p-8">
       <header class="text-center mb-12">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-          Comprendiendo la Metodología Agile
+          Comprendiendo la Metodología (mentalidad) Agile
         </h1>
         <p class="text-lg text-gray-600 max-w-3xl mx-auto">
           Una guía visual a los principios, conceptos y herramientas clave de la
@@ -113,14 +130,33 @@
         id="agile-manifesto"
         class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8"
       >
-        <a
-          target="_blank"
-          href="https://agilemanifesto.org/iso/es/manifesto.html"
+        <h2
+          class="text-3xl font-bold text-center mb-8 flex items-center justify-center"
         >
-          <h2 class="text-3xl font-bold text-center mb-8">
-            Los 4 Valores Fundamentales del Manifiesto Ágil
-          </h2>
-        </a>
+          Los 4 Valores Fundamentales del Manifiesto Ágil
+          <!-- Botón de información -->
+          <a
+            href="https://agilemanifesto.org/iso/es/manifesto.html"
+            target="_blank"
+            class="ml-4 text-gray-500 hover:text-blue-500 transition-colors duration-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13 16h-1v-4h-1m-4-6h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </a>
+        </h2>
+
         <p class="text-center text-gray-700 max-w-3xl mx-auto mb-10">
           El Manifiesto Ágil prioriza los elementos de la izquierda por encima
           de los de la derecha para lograr una mayor flexibilidad y capacidad de
@@ -206,13 +242,17 @@
               href="./cuestionario.html" 
               class="inline-block bg-blue-500 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:bg-blue-600 transition-colors transform hover:scale-105"
             >
-              Hacer Cuestionario
+              Testear conocimientos
             </a>
           </div>
         </section>
         <section id="agile-vs-traditional" class="mb-16">
-          <h2 class="text-3xl font-bold text-center mb-8">
+          <h2
+            class="text-3xl font-bold text-center mb-8 flex items-center justify-center"
+          >
             Agile vs. Enfoque Tradicional
+            <!-- Nuevo botón de información -->
+            
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-10">
             <div class="bg-white rounded-lg shadow-md p-6">
@@ -579,93 +619,6 @@
           </div>
         </section>
 
-        <section id="roles-rituals" class="mb-16">
-          <h2 class="text-3xl font-bold text-center mb-8">
-            Roles y Rituales Clave
-          </h2>
-          <div class="flex justify-center mb-10">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
-              <div
-                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
-              >
-                <span class="text-6xl text-teal-500">👑</span>
-                <h3 class="font-bold text-xl mt-4 mb-2">Product Owner</h3>
-                <p class="text-sm text-gray-700 text-center">
-                  Es la voz del cliente y los stakeholders. Su principal
-                  responsabilidad es maximizar el valor del producto gestionando
-                  el Product Backlog de manera efectiva.
-                </p>
-              </div>
-              <div
-                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
-              >
-                <span class="text-6xl text-blue-500">🛠️</span>
-                <h3 class="font-bold text-xl mt-4 mb-2">Scrum Master</h3>
-                <p class="text-sm text-gray-700 text-center">
-                  Es un facilitador y "líder de servicio". Asegura que el equipo
-                  siga los principios de Scrum, elimina impedimentos y protege
-                  al equipo de interrupciones.
-                </p>
-              </div>
-              <div
-                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
-              >
-                <span class="text-6xl text-purple-500">👷</span>
-                <h3 class="font-bold text-xl mt-4 mb-2">Equipo de Entrega</h3>
-                <p class="text-sm text-gray-700 text-center">
-                  El grupo de profesionales (programadores, testers, etc.) que
-                  crean el incremento de producto. Son auto-organizados y
-                  multifuncionales.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
-            <h3 class="text-2xl font-bold text-center mb-4">
-              El Ciclo de un Sprint (scrum)
-            </h3>
-            <div class="flex items-center justify-center space-x-2 mb-4">
-              <div class="icon-box"><span class="text-2xl">👑</span></div>
-              <div class="icon-box"><span class="text-2xl">🛠️</span></div>
-              <div class="icon-box"><span class="text-2xl">👷</span></div>
-            </div>
-            <div class="flex flex-col items-stretch space-y-4 max-w-lg mx-auto">
-              <div class="flowchart-node">1. Planificación del Sprint</div>
-              <div class="flowchart-connector"></div>
-              <div class="flowchart-node">
-                2. Reunión Diaria (Daily Stand-up)
-              </div>
-              <div class="flowchart-connector"></div>
-              <div class="flowchart-node">3. Trabajo del Equipo</div>
-              <div class="flowchart-connector"></div>
-              <div class="flowchart-node">4. Revisión del Sprint</div>
-              <div class="flowchart-connector"></div>
-              <div class="flowchart-node">5. Retrospectiva</div>
-            </div>
-            <div class="mt-8 text-center text-gray-700">
-              <p class="mb-2">
-                <strong class="text-teal-600">Planificación del Sprint:</strong>
-                El equipo selecciona el trabajo del Product Backlog para el
-                sprint.
-              </p>
-              <p class="mb-2">
-                <strong class="text-teal-600">Daily Stand-up:</strong>
-                Sincronización diaria del equipo para revisar el progreso y
-                discutir impedimentos.
-              </p>
-              <p class="mb-2">
-                <strong class="text-teal-600">Revisión del Sprint:</strong> El
-                equipo demuestra el incremento de producto a los stakeholders.
-              </p>
-              <p class="mb-2">
-                <strong class="text-teal-600">Retrospectiva:</strong> El equipo
-                reflexiona sobre el proceso de trabajo para mejorar en el
-                próximo sprint.
-              </p>
-            </div>
-          </div>
-        </section>
-
         <section id="visual-tools" class="mb-16">
           <h2 class="text-3xl font-bold text-center mb-8">
             Herramientas Visuales
@@ -729,7 +682,7 @@
                 Las tarjetas se mueven entre columnas que representan las etapas
                 del proceso.
               </p>
-              <br><br><br><br><br><br>
+              <br /><br /><br /><br /><br /><br />
 
               <div
                 class="flex flex-col md:flex-row items-center justify-center gap-8"
@@ -749,8 +702,12 @@
           id="agile-types"
           class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8"
         >
-          <h2 class="text-3xl font-bold text-center mb-8">
-            Tipos de Metodologías Ágiles
+          <h2
+            class="text-3xl font-bold text-center mb-8 flex items-center justify-center"
+          >
+            Variaciones de Metodologías Ágiles
+            
+            
           </h2>
           <p class="text-center text-gray-700 max-w-3xl mx-auto mb-8">
             La metodología ágil es una filosofía, y las metodologías son marcos
@@ -995,7 +952,9 @@
 
             <!-- Tarjeta para DSDM -->
             <div class="methodology-card border-l-4 border-orange-600">
-              <h3 class="font-bold text-2xl mb-4 text-orange-600">DSDM</h3>
+              <h3 class="font-bold text-2xl mb-4 text-orange-600">
+                Dynamic Systems Development Method (DSDM)
+              </h3>
               <div class="space-y-4">
                 <div>
                   <h4 class="font-semibold text-lg text-gray-800">
@@ -1005,7 +964,10 @@
                     <li>Enfoque en el valor de negocio.</li>
                     <li>Tiempo y presupuesto fijos, alcance variable.</li>
                     <li>
-                      Colaboración activa y uso de la Priorización MoSCoW.
+                      Colaboración activa y uso de la Priorización MoSCoW ("Must
+                      have" (Debe tener), "Should have" (Debería tener), "Could
+                      have" (Podría tener) y "Won't have" (No tendrá para este
+                      momento)).
                     </li>
                   </ul>
                 </div>
@@ -1037,7 +999,9 @@
 
             <!-- Tarjeta para SAFe -->
             <div class="methodology-card border-l-4 border-sky-600">
-              <h3 class="font-bold text-2xl mb-4 text-sky-600">SAFe</h3>
+              <h3 class="font-bold text-2xl mb-4 text-sky-600">
+                Scaled Agile Framework (SAFe)
+              </h3>
               <div class="space-y-4">
                 <div>
                   <h4 class="font-semibold text-lg text-gray-800">
@@ -1084,6 +1048,107 @@
           </div>
         </section>
 
+        <section id="scrum-intro" class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8 text-center">
+            <h2 class="text-3xl font-bold mb-4">¿Quieres profundizar en Scrum?</h2>
+            <p class="text-gray-700 max-w-2xl mx-auto mb-6">
+                Scrum es el marco de trabajo ágil más utilizado y aceptado a nivel mundial.
+                Ofrece una estructura clara para que los equipos entreguen valor en entornos complejos.
+            </p>
+            <a
+                href="scrumGuide.html"
+                class="inline-block bg-teal-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-teal-600 transition-colors transform hover:scale-105"
+            >
+                Explora la Guía Scrum
+            </a>
+        </section>
+
+        <section id="roles-rituals" class="mb-16">
+          <h2 class="text-3xl font-bold text-center mb-8">
+            Roles y Rituales Clave
+          </h2>
+          <div class="flex justify-center mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <span class="text-6xl text-teal-500">👑</span>
+                <h3 class="font-bold text-xl mt-4 mb-2">Product Owner</h3>
+                <p class="text-sm text-gray-700 text-center">
+                  Es la voz del cliente y los stakeholders. Su principal
+                  responsabilidad es maximizar el valor del producto gestionando
+                  el Product Backlog de manera efectiva.
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <span class="text-6xl text-blue-500">🛠️</span>
+                <h3 class="font-bold text-xl mt-4 mb-2">Scrum Master</h3>
+                <p class="text-sm text-gray-700 text-center">
+                  Es un facilitador y "líder de servicio". Asegura que el equipo
+                  siga los principios de Scrum, elimina impedimentos y protege
+                  al equipo de interrupciones.
+                </p>
+              </div>
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <span class="text-6xl text-purple-500">👷</span>
+                <h3 class="font-bold text-xl mt-4 mb-2">Equipo de Entrega</h3>
+                <p class="text-sm text-gray-700 text-center">
+                  El grupo de profesionales (programadores, testers, etc.) que
+                  crean el incremento de producto. Son auto-organizados y
+                  multifuncionales.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+            <h3 class="text-2xl font-bold text-center mb-4">
+              El Ciclo de un Sprint (scrum)
+            </h3>
+            <div class="flex items-center justify-center space-x-2 mb-4">
+              <div class="icon-box"><span class="text-2xl">👑</span></div>
+              <div class="icon-box"><span class="text-2xl">🛠️</span></div>
+              <div class="icon-box"><span class="text-2xl">👷</span></div>
+            </div>
+            <div class="flex flex-col items-stretch space-y-4 max-w-lg mx-auto">
+              <div class="flowchart-node">1. Planificación del Sprint</div>
+              <div class="flowchart-connector"></div>
+              <div class="flowchart-node">
+                2. Reunión Diaria (Daily Stand-up)
+              </div>
+              <div class="flowchart-connector"></div>
+              <div class="flowchart-node">3. Trabajo del Equipo</div>
+              <div class="flowchart-connector"></div>
+              <div class="flowchart-node">4. Revisión del Sprint</div>
+              <div class="flowchart-connector"></div>
+              <div class="flowchart-node">5. Retrospectiva</div>
+            </div>
+            <div class="mt-8 text-center text-gray-700">
+              <p class="mb-2">
+                <strong class="text-teal-600">Planificación del Sprint:</strong>
+                El equipo selecciona el trabajo del Product Backlog para el
+                sprint.
+              </p>
+              <p class="mb-2">
+                <strong class="text-teal-600">Daily Stand-up:</strong>
+                Sincronización diaria del equipo para revisar el progreso y
+                discutir impedimentos.
+              </p>
+              <p class="mb-2">
+                <strong class="text-teal-600">Revisión del Sprint:</strong> El
+                equipo demuestra el incremento de producto a los stakeholders.
+              </p>
+              <p class="mb-2">
+                <strong class="text-teal-600">Retrospectiva:</strong> El equipo
+                reflexiona sobre el proceso de trabajo para mejorar en el
+                próximo sprint.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section id="visual-tools" class="mb-16">
           <h2 class="text-3xl font-bold text-center mb-8">Más información</h2>
           <div class="flex justify-center mb-10">
@@ -1091,15 +1156,52 @@
               <div
                 class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
               >
+                <h3 class="font-bold text-xl mt-4 mb-2">Guía oficial Scrum</h3>
+                <a
+                  target="_blank"
+                  href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf#zoom=100"
+                >
+                  <img
+                    src="https://scrumorg-website-prod.s3.amazonaws.com/drupal/inline-images/2020-11/2020-scrum-guide-cover_0.png"
+                    class="h-40"
+                    alt=""
+                  />
+                </a>
+                <br />
+                <p class="text-sm text-gray-700 text-center">
+                  <b>
+                    The Scrum Guide The Definitive Guide to Scrum: The Rules of
+                    the Game </b
+                  ><br />
+                  La Guía Scrum se mantiene independientemente de cualquier
+                  empresa o proveedor y, por lo tanto, se encuentra en un sitio
+                  neutral en cuanto a la marca.
+                </p>
+                <a
+                  target="_blank"
+                  href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-US.pdf#zoom=100"
+                  >Acceder a la Guía
+                </a>
+              </div>
+
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
                 <h3 class="font-bold text-xl mt-4 mb-2">Libro oficial</h3>
-                <img src="https://cdn.oceano.com.ar/titulos/9786077355595.jpg" class="h-40" alt="">
+                <img
+                  src="https://cdn.oceano.com.ar/titulos/9786077355595.jpg"
+                  class="h-40"
+                  alt=""
+                />
                 <br />
                 <p class="text-sm text-gray-700 text-center">
                   <b>
                     Scrum: How to do twice as much in half the time | Jeff
-                    Sutherland
-                  </b><br>
-                  Existen copias en PDF y audiolibros no oficiales que no cuentan con la autorización del autor. Se invita a apoyar el trabajo original adquiriendo la versión oficial.
+                    Sutherland </b
+                  ><br />
+                  Existen copias en PDF y audiolibros no oficiales que no
+                  cuentan con la autorización del autor. Se invita a apoyar el
+                  trabajo original adquiriendo la versión oficial.
                 </p>
               </div>
 
@@ -1141,13 +1243,17 @@
                   allowfullscreen
                 ></iframe>
                 <br />
-                
+
                 <p class="text-sm text-gray-700 text-center">
                   <b>
-                    Agile, Culture, and How to Make It Work for Us | Zaheer Ali | TEDxHastingsSt
+                    Agile, Culture, and How to Make It Work for Us | Zaheer Ali
+                    | TEDxHastingsSt
                   </b>
-                 Zaheer Ali es el supervisor del Laboratorio de Ciencias y Operaciones de Misión del programa SOFIA de la NASA.
-                 En la charla analiza brevemente el desarrollo de software ágil y cómo ha mejorado las empresas de todo el mundo antes de abordar cómo está cambiando la sociedad en general.
+                  Zaheer Ali es el supervisor del Laboratorio de Ciencias y
+                  Operaciones de Misión del programa SOFIA de la NASA. En la
+                  charla analiza brevemente el desarrollo de software ágil y
+                  cómo ha mejorado las empresas de todo el mundo antes de
+                  abordar cómo está cambiando la sociedad en general.
                 </p>
               </div>
 
