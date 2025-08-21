@@ -51,6 +51,7 @@
         height: 1.5rem;
         margin: 0 auto;
       }
+
       .chart-container {
         position: relative;
         width: 100%;
@@ -95,7 +96,6 @@
           0 1px 2px 0 rgba(0, 0, 0, 0.06);
       }
 
-
       .methodology-card {
         background-color: #ffffff;
         border-radius: 0.75rem;
@@ -110,6 +110,83 @@
         padding: 1rem;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
           0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      }
+      .flowchart-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .flowchart-item {
+        cursor: pointer;
+        padding: 1rem;
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        border: 2px solid #e5e7eb;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        width: 150px;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+      .flowchart-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        border-color: #6366f1;
+      }
+      .arrow {
+        color: #4b5563;
+        font-size: 2rem;
+        margin: 0 0.5rem;
+      }
+      @media (max-width: 768px) {
+        .flowchart-container {
+          flex-direction: column;
+        }
+        .arrow {
+          transform: rotate(90deg);
+          margin: 1rem 0;
+        }
+      }
+
+      .tooltip {
+        visibility: hidden;
+        background-color: #1f2937;
+        color: #ffffff;
+        text-align: center;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        position: absolute;
+        z-index: 10;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        white-space: nowrap;
+      }
+      .item-box:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+      .tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #1f2937 transparent transparent transparent;
       }
     </style>
   </head>
@@ -135,10 +212,11 @@
         >
           Los 4 Valores Fundamentales del Manifiesto Ágil
           <!-- Botón de información -->
+
           <a
             href="https://agilemanifesto.org/iso/es/manifesto.html"
             target="_blank"
-            class="ml-4 text-gray-500 hover:text-blue-500 transition-colors duration-200"
+            class="ml-4 item-box relative text-gray-500 hover:text-blue-500 transition-colors duration-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -154,6 +232,8 @@
                 d="M13 16h-1v-4h-1m-4-6h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
+
+            <span class="tooltip text-sm">Acceder al manifiesto ágil.</span>
           </a>
         </h2>
 
@@ -239,20 +319,68 @@
             class="flex flex-col md:flex-row items-center justify-center gap-8"
           >
             <a
-              href="./cuestionario.html" 
+              href="./cuestionario.html"
               class="inline-block bg-blue-500 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:bg-blue-600 transition-colors transform hover:scale-105"
             >
               Testear conocimientos
             </a>
           </div>
         </section>
+
+        <section
+          class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8 text-center"
+        >
+          <h2 class="text-2xl font-bold text-center text-gray-900 mb-4">
+            Navegación Interactiva
+          </h2>
+          <div class="">
+            <div class="flowchart-container">
+              <div data-target="agile-manifesto" class="flowchart-item">
+                Manifiesto Ágil
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="agile-vs-traditional" class="flowchart-item">
+                Agile vs. Tradicional
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="agile-principles" class="flowchart-item">
+                Principios
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="concepts" class="flowchart-item">
+                Conceptos Esenciales
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="visual-tools" class="flowchart-item">
+                Herramientas Visuales
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="agile-types" class="flowchart-item">
+                Metodologías Ágiles
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="scrum" class="flowchart-item">Scrum</div>
+              <span class="arrow">➡️</span>
+              <div data-target="roles-rituals" class="flowchart-item">
+                Roles y Rituales
+              </div>
+              <span class="arrow">➡️</span>
+              <div data-target="more-info" class="flowchart-item">
+                Más información
+              </div>
+            </div>
+            <p class="text-center text-sm text-gray-500 mt-4">
+              Haz clic en cada elemento para saltar a su sección.
+            </p>
+          </div>
+        </section>
+
         <section id="agile-vs-traditional" class="mb-16">
           <h2
             class="text-3xl font-bold text-center mb-8 flex items-center justify-center"
           >
             Agile vs. Enfoque Tradicional
             <!-- Nuevo botón de información -->
-            
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-10">
             <div class="bg-white rounded-lg shadow-md p-6">
@@ -706,8 +834,6 @@
             class="text-3xl font-bold text-center mb-8 flex items-center justify-center"
           >
             Variaciones de Metodologías Ágiles
-            
-            
           </h2>
           <p class="text-center text-gray-700 max-w-3xl mx-auto mb-8">
             La metodología ágil es una filosofía, y las metodologías son marcos
@@ -1048,18 +1174,29 @@
           </div>
         </section>
 
-        <section id="scrum-intro" class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8 text-center">
-            <h2 class="text-3xl font-bold mb-4">¿Quieres profundizar en Scrum?</h2>
-            <p class="text-gray-700 max-w-2xl mx-auto mb-6">
-                Scrum es el marco de trabajo ágil más utilizado y aceptado a nivel mundial.
-                Ofrece una estructura clara para que los equipos entreguen valor en entornos complejos.
-            </p>
-            <a
-                href="scrumGuide.html"
-                class="inline-block bg-teal-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-teal-600 transition-colors transform hover:scale-105"
-            >
-                Explora la Guía Scrum
-            </a>
+        <section
+          id="scrum"
+          class="mb-16 bg-white rounded-lg shadow-md p-6 md:p-8 text-center"
+        >
+          <h2 class="text-3xl font-bold mb-4">
+            ¿Quieres profundizar en Scrum?
+          </h2>
+          <p class="text-gray-700 max-w-2xl mx-auto mb-6">
+            Scrum es el marco de trabajo ágil más utilizado y aceptado a nivel
+            mundial. Ofrece una estructura clara para que los equipos entreguen
+            valor en entornos complejos.
+          </p>
+          <img
+              src="./archivos/scrum-teros.jpg"
+              alt="Imagen del contraste visual del enfoque tradicional vs. ágil"
+              class="w-full mx-auto mb-10 max-w-lg"
+            />
+          <a
+            href="scrumGuide.html"
+            class="inline-block bg-teal-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-teal-600 transition-colors transform hover:scale-105"
+          >
+            Explora la Guía Scrum
+          </a>
         </section>
 
         <section id="roles-rituals" class="mb-16">
@@ -1149,7 +1286,7 @@
           </div>
         </section>
 
-        <section id="visual-tools" class="mb-16">
+        <section id="more-info" class="mb-16">
           <h2 class="text-3xl font-bold text-center mb-8">Más información</h2>
           <div class="flex justify-center mb-10">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
@@ -1157,10 +1294,7 @@
                 class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
               >
                 <h3 class="font-bold text-xl mt-4 mb-2">Guía oficial Scrum</h3>
-                <a
-                  target="_blank"
-                  href="https://scrumguides.org/index.html"
-                >
+                <a target="_blank" href="https://scrumguides.org/index.html">
                   <img
                     src="https://scrumorg-website-prod.s3.amazonaws.com/drupal/inline-images/2020-11/2020-scrum-guide-cover_0.png"
                     class="h-40"
@@ -1177,9 +1311,7 @@
                   empresa o proveedor y, por lo tanto, se encuentra en un sitio
                   neutral en cuanto a la marca.
                 </p>
-                <a
-                  target="_blank"
-                  href="https://scrumguides.org/index.html"
+                <a target="_blank" href="https://scrumguides.org/index.html"
                   >Acceder a la Guía
                 </a>
               </div>
@@ -1187,7 +1319,7 @@
               <div
                 class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
               >
-                <h3 class="font-bold text-xl mt-4 mb-2">Libro oficial</h3>
+                <h3 class="font-bold text-xl mt-4 mb-2">Libro de co-creador</h3>
                 <img
                   src="https://cdn.oceano.com.ar/titulos/9786077355595.jpg"
                   class="h-40"
@@ -1208,7 +1340,7 @@
               <div
                 class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
               >
-                <h3 class="font-bold text-xl mt-4 mb-2">Jeff Sutherland</h3>
+                <h3 class="font-bold text-xl mt-4 mb-2">Sutherland (co-creador)</h3>
                 <iframe
                   width="200"
                   src="https://www.youtube.com/embed/s4thQcgLCqk?si=n6fJKPEB3Ma888Ks"
@@ -1332,6 +1464,25 @@
                   institucionalizado. Usan el modelo, pero de forma flexible.
                 </p>
               </div>
+              <div
+                class="flex flex-col items-center bg-white p-6 rounded-lg shadow-md"
+              >
+                <h3 class="font-bold text-xl mt-4 mb-2">Scrum en 20 min</h3>
+                <iframe
+                  width="200"
+                  src="https://www.youtube.com/embed/SWDhGSZNF9M?si=zPWcrGde5iwA6ztv"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen
+                ></iframe>
+                <br />
+
+                <p class="text-sm text-gray-700 text-center">
+                  Este video de Codex Community explica (en inglés) muy bien sintetizado lo que es scrum, como usarlo y como se compone.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -1409,6 +1560,20 @@
             },
           },
         },
+      });
+
+      // Lógica para el diagrama de flujo interactivo
+      document.addEventListener("DOMContentLoaded", () => {
+        const flowchartItems = document.querySelectorAll(".flowchart-item");
+        flowchartItems.forEach((item) => {
+          item.addEventListener("click", () => {
+            const sectionId = item.getAttribute("data-target");
+            const section = document.getElementById(sectionId);
+            if (section) {
+              section.scrollIntoView({ behavior: "smooth" });
+            }
+          });
+        });
       });
     </script>
   </body>
